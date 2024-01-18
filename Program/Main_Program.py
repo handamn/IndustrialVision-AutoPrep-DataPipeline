@@ -19,22 +19,21 @@ if int(decision) == 1:
     os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder)
 
     count_subfolder = input("Masukkan berapa subfolder (in/out) : ")
-
-    if int(count_subfolder) == 1:
+    for x in range(0,int(count_subfolder)):
+        nama_folder_x = input("Masukkan Nama Folder X ")
         item_subfolder = input("Berapa banyak item subfolder : ")
+        os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\")
         for i in range(0,int(item_subfolder)):
             nama_subfolder = input("masukkan nama subfoldernya ")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_subfolder+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_subfolder+"\\"+"images"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_subfolder+"\\"+"labels"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\"+"images"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\"+"labels"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_subfolder+"\\"+"models"+"\\")
+            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\")
+            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"images"+"\\")
+            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"labels"+"\\")
+            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\")
+            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\"+"images"+"\\")
+            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\"+"labels"+"\\")
+            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"models"+"\\")
             i+=1
-
-    
-
+        x+=1
 
 else :
     print("list project")
