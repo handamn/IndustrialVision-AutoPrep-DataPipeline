@@ -1,30 +1,30 @@
 import os
 
+BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
+
 def create_folders(folder_name, folder_depths, folder_names, current_depth=0):
     if current_depth == len(folder_depths):
+        """os.makedirs(os.path.join(folder_name, "images"))
+        os.makedirs(os.path.join(folder_name, "labels"))
+        os.makedirs(os.path.join(folder_name, "X_Automasi"))
+        os.makedirs(os.path.join(folder_name, "models"))
+        os.makedirs(os.path.join(folder_name, "X_Automasi", "images"))
+        os.makedirs(os.path.join(folder_name, "X_Automasi", "labels"))"""
         return
     
     for i in range(folder_depths[current_depth]):
-        subfolder_name = os.path.join(folder_name, folder_names[current_depth][i])
+        subfolder_name = os.path.join(BASIS_FOLDER,folder_name, folder_names[current_depth][i])
         os.makedirs(subfolder_name)  # Membuat folder
         create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1)
-
-"""# Contoh pemanggilan fungsi
-folder_name = 'MainFolder'
-folder_depths = [2, 3, 2]  # Jumlah folder di setiap tingkat kedalaman
-folder_names = [
-    ['Subfolder_1_1', 'Subfolder_1_2'],
-    ['Subfolder_2_1', 'Subfolder_2_2', 'Subfolder_2_3'],
-    ['Subfolder_3_1', 'Subfolder_3_2']
-]  # Nama folder di setiap tingkat kedalaman
-
-create_folders(folder_name, folder_depths, folder_names)"""
+        
 
 
 # Clear screen command
 os.system('cls' if os.name == 'nt' else 'clear')
 
-BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\"
+# Inisialisasi list kosong
+folder_names = []
+
 
 print("1. new project")
 print("2. load project")
@@ -41,6 +41,17 @@ if int(decision) == 1:
     kedalaman = input("Masukkan Kedalaman Folder : ")
     isi_kedalaman = []
     for i in range(0,int(kedalaman)):
-        item = input("masukkan jumlah folder tingkat " + str(i+1) + " : ")
-        isi_kedalaman.append(int(item))
+        item = int(input(f"Masukkan jumlah subfolder untuk tingkat kedalaman {i+1}: "))
+        isi_kedalaman.append(item)
+
+        subfolders = []
+        #num_subfolders = int(input(f"Masukkan jumlah subfolder untuk tingkat kedalaman {i+1}: "))
+        # Loop untuk setiap subfolder pada tingkat kedalaman tertentu
+        for j in range(item):
+            subfolder_name = input(f"Masukkan nama subfolder {j+1} pada tingkat kedalaman {i+1}: ")
+            subfolders.append(subfolder_name)
         
+        # Menambahkan list subfolder ke dalam list utama
+        folder_names.append(subfolders)        
+
+    create_folders(nama_project, isi_kedalaman, folder_names)
