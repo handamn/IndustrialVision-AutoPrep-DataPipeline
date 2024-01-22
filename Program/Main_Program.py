@@ -2,72 +2,61 @@ import os
 
 BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
 
-def create_folders(folder_name, folder_depths, folder_names, current_depth=0):
+def create_folders_recursive(folder_path, folder_depths, folder_names, current_depth=0):
+    if current_depth == len(folder_depths):
+        return
     
-    if current_depth == len(folder_depths) - 1:
-        # If it's the last level, ask whether the last subfolder name should be the same for all folders
-        same_last_subfolder = input("Apakah nama subfolder terakhir sama untuk semua folder? (y/n): ").lower().strip() == 'y'
-        if same_last_subfolder:
-            last_subfolder_name = input("Masukkan nama subfolder terakhir: ")
+    for folder_name in folder_names[current_depth]:
+        subfolder_path = os.path.join(folder_path, folder_name)
+        os.makedirs(subfolder_path)  # Membuat folder
+        if current_depth == len(folder_depths) - 1:
+            create_last_subfolders(subfolder_path)
         else:
-            last_subfolder_names = []
-            for i in range(folder_depths[current_depth]):
-                num_subfolders = int(input(f"Masukkan jumlah subfolder untuk folder {folder_names[current_depth][i]}: "))
-                names = []
-                for j in range(num_subfolders):
-                    name = input(f"Masukkan nama subfolder {j+1} untuk folder {folder_name[len(BASIS_FOLDER):]} {folder_names[current_depth][i]}: ")
-                    names.append(name)
-                last_subfolder_names.append(names)
-        
-        for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat folder
-            
-            if same_last_subfolder:
-                os.makedirs(os.path.join(subfolder_name, last_subfolder_name))
-            else:
-                for name in last_subfolder_names[i]:
-                    os.makedirs(os.path.join(subfolder_name, name))
-                    os.makedirs(os.path.join(subfolder_name, name, "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "labels"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "labels"))
-    
-    elif current_depth < len(folder_depths) - 1:  # Periksa apakah sudah mencapai kedalaman terakhir
-        for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat folder
-            create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1)
+            create_folders_recursive(subfolder_path, folder_depths, folder_names, current_depth + 1)
 
-# Clear screen command
-os.system('cls' if os.name == 'nt' else 'clear')
+def create_last_subfolders(folder_path):
+    num_subfolders = int(input("Masukkan jumlah subfolder: "))
+    for _ in range(num_subfolders):
+        subfolder_name = input("Masukkan nama subfolder: ")
+        subfolder_path = os.path.join(folder_path, subfolder_name)
+        os.makedirs(subfolder_path)  # Membuat folder
+        create_subfolders_inside_last(subfolder_path)
 
-# Inisialisasi list kosong
-folder_names = []
+def create_subfolders_inside_last(subfolder_path):
+    subfolders = ["images", "labels", "X_Automasi", "X_Automasi/images", "X_Automasi/labels"]
+    for subfolder in subfolders:
+        os.makedirs(os.path.join(subfolder_path, subfolder))
 
-print("1. new project")
-print("2. load project")
+def main():
+    # Clear screen command
+    os.system('cls' if os.name == 'nt' else 'clear')
 
-decision = input("Masukkan Menu : ")
-if int(decision) == 1:
-    print("Buat Project")
-    print("")
-    ####################
-    nama_project = input("Masukkan Nama Project : ")
-    print("")
+    print("1. new project")
+    print("2. load project")
 
-    kedalaman = input("Masukkan Kedalaman Folder : ")
-    isi_kedalaman = []
-    for i in range(0, int(kedalaman)):
-        item = int(input(f"Masukkan jumlah subfolder untuk tingkat kedalaman {i+1}: "))
-        isi_kedalaman.append(item)
+    decision = input("Masukkan Menu : ")
+    if int(decision) == 1:
+        print("Buat Project")
+        print("")
+        ####################
+        nama_project = input("Masukkan Nama Project : ")
+        print("")
 
-        subfolders = []
-        for j in range(item):
-            subfolder_name = input(f"Masukkan nama subfolder {j+1} untuk folder {nama_project}: ")
-            subfolders.append(subfolder_name)
-        
-        folder_names.append(subfolders)        
+        kedalaman = input("Masukkan Kedalaman Folder : ")
+        isi_kedalaman = []
+        folder_names = []  # Definisi folder_names di sini
+        for i in range(0, int(kedalaman)):
+            item = int(input(f"Masukkan jumlah subfolder untuk tingkat kedalaman {i+1}: "))
+            isi_kedalaman.append(item)
 
-    create_folders(nama_project, isi_kedalaman, folder_names)
+            subfolders = []
+            for j in range(item):
+                subfolder_name = input(f"Masukkan nama subfolder {j+1} untuk folder {nama_project}: ")
+                subfolders.append(subfolder_name)
+
+            folder_names.append(subfolders)
+
+        create_folders_recursive(os.path.join(BASIS_FOLDER, nama_project), isi_kedalaman, folder_names)
+
+if __name__ == "__main__":
+    main()
