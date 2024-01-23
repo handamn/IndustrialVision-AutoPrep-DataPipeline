@@ -16,7 +16,7 @@ def create_folders(folder_name, folder_depths, folder_names, current_depth=0):
             last_subfolder_names.append(names)
         
         for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, folder_names[current_depth][i])
+            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, "1_a",folder_names[current_depth][i])
             os.makedirs(subfolder_name)  # Membuat folder
             
             for name in last_subfolder_names[i]:
@@ -26,10 +26,26 @@ def create_folders(folder_name, folder_depths, folder_names, current_depth=0):
                 os.makedirs(os.path.join(subfolder_name, name, "X_Automasi"))
                 os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "images"))
                 os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "labels"))
+            
+            subfolder_name2 = os.path.join(BASIS_FOLDER, folder_name, "1_b",folder_names[current_depth][i])
+            os.makedirs(subfolder_name2)  # Membuat folder
+            
+            for name in last_subfolder_names[i]:
+                os.makedirs(os.path.join(subfolder_name2, name))
+                os.makedirs(os.path.join(subfolder_name2, name, "images"))
+                os.makedirs(os.path.join(subfolder_name2, name, "labels"))
+                os.makedirs(os.path.join(subfolder_name2, name, "X_Automasi"))
+                os.makedirs(os.path.join(subfolder_name2, name, "X_Automasi", "images"))
+                os.makedirs(os.path.join(subfolder_name2, name, "X_Automasi", "labels"))
+
     
     elif current_depth < len(folder_depths) - 1:  # Periksa apakah sudah mencapai kedalaman terakhir
         for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, folder_names[current_depth][i])
+            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, "1_a", folder_names[current_depth][i])
+            os.makedirs(subfolder_name)  # Membuat folder
+            create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1)
+
+            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, "1_b", folder_names[current_depth][i])
             os.makedirs(subfolder_name)  # Membuat folder
             create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1)
 
