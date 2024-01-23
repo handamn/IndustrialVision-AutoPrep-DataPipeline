@@ -5,6 +5,7 @@ BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
 def create_folders(folder_name, folder_depths, folder_names, current_depth=0):
     
     if current_depth == len(folder_depths) - 1:
+        
         last_subfolder_names = []
         for i in range(folder_depths[current_depth]):
             num_subfolders = int(input(f"Masukkan jumlah subfolder untuk folder {folder_names[current_depth][i]}: "))
@@ -63,3 +64,25 @@ if int(decision) == 1:
         folder_names.append(subfolders)        
 
     create_folders(nama_project, isi_kedalaman, folder_names)
+
+elif int(decision) == 2:
+    dir_list = os.listdir(BASIS_FOLDER) 
+
+    print("Files and directories in '", BASIS_FOLDER, "' :") 
+
+    # print the list 
+    print(dir_list)
+
+    print("")
+    
+    pilih_folder = input("Masukkan Nama Project : ")
+    print("Saat ini sedang di project " + pilih_folder)
+
+    BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\" + pilih_folder + "\\"
+
+    print(BASIS_FOLDER)
+
+
+
+
+
