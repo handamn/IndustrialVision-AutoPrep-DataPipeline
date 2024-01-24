@@ -13,7 +13,6 @@ def create_folders(folder_name, folder_depths, folder_names, current_depth=0, is
         # Memasukkan kedalaman folder dan subfolder ke dalam folder_A
         for i in range(folder_depths[current_depth]):
             subfolder_name = os.path.join(project_folder, "folder_A", folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat subfolder
             create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1, is_folder_A=True)
     
     elif current_depth == len(folder_depths) - 1:
@@ -28,22 +27,13 @@ def create_folders(folder_name, folder_depths, folder_names, current_depth=0, is
         
         for i in range(folder_depths[current_depth]):
             subfolder_name = os.path.join(folder_name, folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat folder
             
-            for name in last_subfolder_names[i]:
-                if is_folder_A:
-                    os.makedirs(os.path.join(subfolder_name, name, "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "labels"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "labels"))
-                else:
-                    pass  # Tidak melakukan pembuatan folder untuk folder_B
+            # Tidak melakukan pembuatan folder untuk folder_A dan folder_B
+            pass
     
     elif current_depth < len(folder_depths) - 1:  # Periksa apakah sudah mencapai kedalaman terakhir
         for i in range(folder_depths[current_depth]):
             subfolder_name = os.path.join(folder_name, folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat folder
             create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1, is_folder_A)
     
     # Setelah proses pembuatan struktur folder_A selesai, salin struktur folder_A ke folder_B
