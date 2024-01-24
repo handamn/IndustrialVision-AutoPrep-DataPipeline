@@ -1,2 +1,3 @@
 # IndustrialVision-AutoPrep-DataPipeline
  Automate Data Preparation and Pipelining for Custom Object Detection Using YOLOv5 in Industrial Manufacturing
+This project simplifies the process of preparing and pipelining custom data for object detection in the industrial manufacturing sector, specifically for quality checking processes. Utilizing the YOLOv5 algorithm, this tool streamlines the creation and management of datasets tailored for detecting objects in automotive manufacturing environments.
