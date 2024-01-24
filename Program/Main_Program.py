@@ -3,17 +3,22 @@ import shutil
 
 BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
 
-def create_folders(folder_name, folder_depths, folder_names, current_depth=0, is_folder_A=True):
+def create_folders(folder_name, folder_depths, folder_names, current_depth=0):
     
-    if current_depth == 0:  # Menambahkan pembuatan folder nama project, folder_A, dan folder_B
+    if current_depth == 0:  # Membuat folder nama project dan folder_A
         project_folder = os.path.join(BASIS_FOLDER, folder_name)
         os.makedirs(project_folder)
         os.makedirs(os.path.join(project_folder, "folder_A"))
         
-        # Memasukkan kedalaman folder dan subfolder ke dalam folder_A
+        # Memasukkan kedalaman folder dan subfolder ke dalam folder_A dan folder_B
         for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(project_folder, "folder_A", folder_names[current_depth][i])
-            create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1, is_folder_A=True)
+            subfolder_name_A = os.path.join(project_folder, "folder_A", folder_names[current_depth][i])
+            os.makedirs(subfolder_name_A)  # Membuat subfolder untuk folder_A
+            create_folders(subfolder_name_A, folder_depths, folder_names, current_depth + 1)
+            
+            subfolder_name_B = os.path.join(project_folder, "folder_B", folder_names[current_depth][i])
+            os.makedirs(subfolder_name_B)  # Membuat subfolder untuk folder_B
+            create_folders(subfolder_name_B, folder_depths, folder_names, current_depth + 1)
     
     elif current_depth == len(folder_depths) - 1:
         last_subfolder_names = []
@@ -26,22 +31,23 @@ def create_folders(folder_name, folder_depths, folder_names, current_depth=0, is
             last_subfolder_names.append(names)
         
         for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(folder_name, folder_names[current_depth][i])
+            subfolder_name_A = os.path.join(folder_name, folder_names[current_depth][i])
+            subfolder_name_B = os.path.join(folder_name.replace("folder_A", "folder_B"), folder_names[current_depth][i])
             
-            # Tidak melakukan pembuatan folder untuk folder_A dan folder_B
-            pass
+            for name in last_subfolder_names[i]:
+                # Buat subfolder pada folder_A dan folder_B
+                os.makedirs(os.path.join(subfolder_name_A, name))
+                os.makedirs(os.path.join(subfolder_name_B, name))
     
     elif current_depth < len(folder_depths) - 1:  # Periksa apakah sudah mencapai kedalaman terakhir
         for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(folder_name, folder_names[current_depth][i])
-            create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1, is_folder_A)
-    
-    # Setelah proses pembuatan struktur folder_A selesai, salin struktur folder_A ke folder_B
-    if current_depth == 0 and is_folder_A:
-        folder_A_path = os.path.join(BASIS_FOLDER, folder_name, "folder_A")
-        folder_B_path = os.path.join(BASIS_FOLDER, folder_name, "folder_B")
-        shutil.copytree(folder_A_path, folder_B_path)
-
+            subfolder_name_A = os.path.join(folder_name, folder_names[current_depth][i])
+            os.makedirs(subfolder_name_A)  # Membuat subfolder untuk folder_A
+            create_folders(subfolder_name_A, folder_depths, folder_names, current_depth + 1)
+            
+            subfolder_name_B = os.path.join(folder_name.replace("folder_A", "folder_B"), folder_names[current_depth][i])
+            os.makedirs(subfolder_name_B)  # Membuat subfolder untuk folder_B
+            create_folders(subfolder_name_B, folder_depths, folder_names, current_depth + 1)
 
 
 
