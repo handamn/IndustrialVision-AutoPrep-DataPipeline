@@ -1,5 +1,8 @@
 import os
+import random
 import shutil
+import yaml
+import subprocess
 
 BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
 
@@ -88,3 +91,5 @@ elif int(decision) == 2:
     BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\" + pilih_folder + "\\"
 
     print(BASIS_FOLDER)
+
+
