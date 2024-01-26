@@ -78,13 +78,18 @@ def duplicate_structure(source_folder, target_folder):
         if "X_Automasi" in dirs:
             shutil.rmtree(os.path.join(root, "X_Automasi"))
 
-    # Membuat folder HANIF, ADAM, AL, dan ABRAAR di setiap subfolder terdalam
     for root, dirs, files in os.walk(target_folder):
         if not dirs:
-            os.makedirs(os.path.join(root, "HANIF"))
-            os.makedirs(os.path.join(root, "ADAM"))
-            os.makedirs(os.path.join(root, "AL"))
-            os.makedirs(os.path.join(root, "ABRAAR"))
+            os.makedirs(os.path.join(root, "train"))
+            os.makedirs(os.path.join(root, "train", "images"))
+            os.makedirs(os.path.join(root, "train", "labels"))
+            os.makedirs(os.path.join(root, "val"))
+            os.makedirs(os.path.join(root, "val", "images"))
+            os.makedirs(os.path.join(root, "val", "labels"))
+            os.makedirs(os.path.join(root, "test"))
+            os.makedirs(os.path.join(root, "test", "images"))
+            os.makedirs(os.path.join(root, "test", "labels"))
+            os.makedirs(os.path.join(root, "models"))
 
 # Clear screen command
 os.system('cls' if os.name == 'nt' else 'clear')
