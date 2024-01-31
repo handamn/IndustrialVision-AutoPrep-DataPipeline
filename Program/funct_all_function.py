@@ -1,4 +1,6 @@
 #this file is basis for all function
+
+##### Function for input default item
 def data_input_default():
     car           = input("Enter Car Model           (ex : Innova)          : ")
     steer         = input("Enter Steer               (ex : RHD)             : ")
@@ -7,3 +9,4 @@ def data_input_default():
     kendaraan = car + "_" + steer
 
     return kendaraan, box, kode_box
+#################################################
