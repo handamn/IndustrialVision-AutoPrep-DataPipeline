@@ -2,6 +2,9 @@ import os
 import shutil
 import funct_foldering as foldering
 
+BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
+
+
 def print_menu():
     print("\nProgram Generator\n")
     print("Pilih Menu :")
@@ -20,7 +23,12 @@ def print_menu():
 
     return hasil_menu
 
-BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
+def write_text(project_name, list_name):
+    file_name = os.path.join(BASIS_FOLDER, project_name) + "\group.txt"
+    with open(file_name, 'w+') as f:
+        for items in list_name:
+            f.write('%s\n' %items)
+    f.close()
 
 # Clear screen command
 os.system('cls' if os.name == 'nt' else 'clear')
@@ -41,7 +49,10 @@ if int(decision) == 1:
 
     kedalaman = input("Masukkan Kedalaman Folder : ")
     isi_kedalaman = []
+    group = []
     for i in range(0, int(kedalaman)):
+        group_folder = input(f"Masukkan nama grouping folder tingkat kedalaman {i+1}: ")
+        group.append(group_folder)
         item = int(input(f"Masukkan jumlah subfolder untuk tingkat kedalaman {i+1}: "))
         isi_kedalaman.append(item)
 
@@ -50,9 +61,10 @@ if int(decision) == 1:
             subfolder_name = input(f"Masukkan nama subfolder {j+1} untuk folder {nama_project}: ")
             subfolders.append(subfolder_name)
         
-        folder_names.append(subfolders)        
+        folder_names.append(subfolders)
 
     foldering.create_folders(os.path.join(BASIS_FOLDER, nama_project), isi_kedalaman, folder_names, BASIS_FOLDER)
+    write_text(nama_project, group)
 
 elif int(decision) == 2:
     dir_list = os.listdir(BASIS_FOLDER) 
@@ -75,5 +87,3 @@ elif int(decision) == 2:
 
     if pilih_menu == "1":
         print("UHUYYYY")
-
-
