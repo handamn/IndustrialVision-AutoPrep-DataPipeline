@@ -18,13 +18,4 @@ def data_input_default(route):
 
     return dict_value_input
 
-
-
-
-tes = data_input_default(file_path)
-
-print(len(tes))
-
-print(tes[0])
-
 ###############################################
