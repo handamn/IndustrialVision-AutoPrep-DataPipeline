@@ -1,6 +1,6 @@
 import os
 import shutil
-import Start4_folder_V1 as foldering
+import funct_foldering as foldering
 
 def print_menu():
     print("\nProgram Generator\n")
