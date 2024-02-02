@@ -1,7 +1,8 @@
 import os
 import shutil
 import funct_foldering as foldering
-import funct_all_function as capt
+import funct_all_function as functioning
+
 
 def print_menu():
     print("\nProgram Generator\n")
@@ -89,9 +90,10 @@ elif int(decision) == 2:
     pilih_menu = print_menu()
 
     if pilih_menu == "1":
-        capt.capture(base_folder_menu_1)
+        functioning.capture(base_folder_menu_1)
     
     elif pilih_menu == "2":
-        print("")
+        functioning.pick_rand(base_folder_menu_1)
+
 
 
