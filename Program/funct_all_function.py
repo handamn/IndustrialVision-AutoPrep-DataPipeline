@@ -1,4 +1,7 @@
 #this file is basis for all function
+import cv2
+
+
 
 
 file_path = "F:\\repo_generator\\V1\\data_generator\\Project\\RB24\\group.txt"
@@ -22,3 +25,46 @@ def data_input_default(route):
     return dict_value_input
 
 ###############################################
+
+##### ##### collections of cameras function
+##### listing active camera
+def list_active_cameras(max_cameras=10):
+    active_cameras = []
+    for index in range(max_cameras):
+        cap = cv2.VideoCapture(index)
+        if cap.isOpened():
+            active_cameras.append(index)
+            cap.release()
+    return active_cameras
+###############################################
+
+##### Displaying the camera
+def display_cameras(cameras):
+    caps = [cv2.VideoCapture(i) for i in cameras]
+    
+    while True:
+        for i, cap in enumerate(caps):
+            ret, frame = cap.read()
+            if ret:
+                cv2.imshow(f'Camera {cameras[i]}', frame)
+            else:
+                print(f"Failed to get frame from Camera {cameras[i]}")
+        
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+
+    for cap in caps:
+        cap.release()
+    cv2.destroyAllWindows()
+###############################################
+
+active_cameras = list_active_cameras()
+
+# Print active cameras
+if active_cameras:
+    print(f"Active cameras found at indices: {active_cameras}")
+    display_cameras(active_cameras)
+else:
+    print("No active cameras found.")
+    
+############################ End of Collections
