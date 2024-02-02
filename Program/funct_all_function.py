@@ -76,3 +76,17 @@ print(simpan_folder)
 print("")
 print("======================================================================================================")
 ############################ End of Collections
+
+
+def pick_rand(route_path):
+    group_route = route_path + "group.txt"
+    image_route = route_path + "1_Stock_Photo"
+
+    list_of_input = data_input_default(group_route)
+    image_count = int(input("Enter How Many Image      (ex : 100)             : "))
+
+    for i in range(len(list_of_input)):
+        image_route += "\\" + list_of_input[i]
+
+        if i == len(list_of_input)-1:
+            code = list_of_input[i]
