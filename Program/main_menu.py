@@ -1,9 +1,7 @@
 import os
 import shutil
 import funct_foldering as foldering
-
-BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
-
+import funct_all_function as capt
 
 def print_menu():
     print("\nProgram Generator\n")
@@ -74,9 +72,9 @@ if int(decision) == 1:
     write_text(nama_project, group)
 
 elif int(decision) == 2:
-    dir_list = os.listdir(BASIS_FOLDER) 
+    dir_list = os.listdir(base_folder) 
 
-    print("Files and directories in '", BASIS_FOLDER, "' :") 
+    print("Files and directories in '", base_folder, "' :") 
 
     # print the list 
     print(dir_list)
@@ -86,11 +84,14 @@ elif int(decision) == 2:
     pilih_folder = input("Masukkan Nama Project : ")
     print("Saat ini sedang di project " + pilih_folder)
 
-    BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\" + pilih_folder + "\\"
-
-    print(BASIS_FOLDER)
+    base_folder_menu_1 = base_folder + pilih_folder + "\\"
 
     pilih_menu = print_menu()
 
     if pilih_menu == "1":
-        print("UHUYYYY")
+        capt.capture(base_folder_menu_1)
+    
+    elif pilih_menu == "2":
+        print("")
+
+
