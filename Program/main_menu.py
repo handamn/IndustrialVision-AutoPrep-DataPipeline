@@ -3,6 +3,8 @@ import shutil
 import funct_foldering as foldering
 import funct_all_function as functioning
 
+base_folder = "F:\\repo_generator\\V1\\data_generator\\Project\\"
+
 
 def print_menu():
     print("\nProgram Generator\n")
@@ -94,6 +96,3 @@ elif int(decision) == 2:
     
     elif pilih_menu == "2":
         functioning.pick_rand(base_folder_menu_1)
-
-
-
