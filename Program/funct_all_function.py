@@ -1,6 +1,9 @@
 #this file is basis for all function
 import cv2
-
+import os
+import time
+from datetime import datetime
+import cv2
 
 
 
@@ -27,44 +30,48 @@ def data_input_default(route):
 ###############################################
 
 ##### ##### collections of cameras function
-##### listing active camera
-def list_active_cameras(max_cameras=10):
-    active_cameras = []
-    for index in range(max_cameras):
-        cap = cv2.VideoCapture(index)
-        if cap.isOpened():
-            active_cameras.append(index)
-            cap.release()
-    return active_cameras
-###############################################
+fe_path = "F:\\repo_generator\\V1\\data_generator\\Project\\RB24\\group.txt"
+list_of_input = data_input_default(fe_path)
 
-##### Displaying the camera
-def display_cameras(cameras):
-    caps = [cv2.VideoCapture(i) for i in cameras]
-    
-    while True:
-        for i, cap in enumerate(caps):
-            ret, frame = cap.read()
-            if ret:
-                cv2.imshow(f'Camera {cameras[i]}', frame)
-            else:
-                print(f"Failed to get frame from Camera {cameras[i]}")
-        
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
+jumlah_gambar = int(input("Enter How Many Image      (ex : 100)             : "))
 
-    for cap in caps:
-        cap.release()
-    cv2.destroyAllWindows()
-###############################################
+basis_folder = "F:\\repo_generator\\V1\\data_generator\\Project\\RB24\\1_Stock_Photo"
 
-active_cameras = list_active_cameras()
+simpan_folder = basis_folder
 
-# Print active cameras
-if active_cameras:
-    print(f"Active cameras found at indices: {active_cameras}")
-    display_cameras(active_cameras)
-else:
-    print("No active cameras found.")
-    
+for i in range(len(list_of_input)):
+    simpan_folder += "\\" + list_of_input[i]
+
+number_images = jumlah_gambar
+
+cap = cv2.VideoCapture(0)
+
+# Looping image save program
+for imgnum in range(number_images):
+    print('Collecting image {}'.format(imgnum))
+    ret, frame = cap.read()
+
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+
+    imgname = os.path.join(simpan_folder, f'{timestamp}.jpg')
+    cv2.imwrite(imgname,frame)
+    cv2.imshow('frame',frame)
+    time.sleep(0.0001)
+
+    if cv2.waitKey(1)&0xFF ==ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
+print("")
+print("======================================================================================================")
+print("")
+print("----------------------------------------AMBIL GAMBAR BERHASIL-----------------------------------------")
+print("")
+print("------------------------------------------Gambar disimpan di------------------------------------------")
+print("")
+print(simpan_folder)
+print("")
+print("======================================================================================================")
+
 ############################ End of Collections
