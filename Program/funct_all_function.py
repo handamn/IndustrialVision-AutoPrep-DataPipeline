@@ -31,7 +31,7 @@ def data_input_default(route):
 
 ##### ##### collections of cameras function
 fe_path = "F:\\repo_generator\\V1\\data_generator\\Project\\RB24\\group.txt"
-list_of_input = data_input_default(fe_path)
+list_of_input = read.data_input_default(fe_path)
 
 jumlah_gambar = int(input("Enter How Many Image      (ex : 100)             : "))
 
@@ -41,6 +41,8 @@ simpan_folder = basis_folder
 
 for i in range(len(list_of_input)):
     simpan_folder += "\\" + list_of_input[i]
+
+simpan_folder += "\\images"
 
 number_images = jumlah_gambar
 
@@ -73,5 +75,4 @@ print("")
 print(simpan_folder)
 print("")
 print("======================================================================================================")
-
 ############################ End of Collections
