@@ -50,6 +50,7 @@ if int(decision) == 1:
     kedalaman = input("Masukkan Kedalaman Folder : ")
     isi_kedalaman = []
     group = []
+    x = 0
     for i in range(0, int(kedalaman)):
         group_folder = input(f"Masukkan nama grouping folder tingkat kedalaman {i+1}: ")
         group.append(group_folder)
@@ -60,8 +61,14 @@ if int(decision) == 1:
         for j in range(item):
             subfolder_name = input(f"Masukkan nama subfolder {j+1} untuk folder {nama_project}: ")
             subfolders.append(subfolder_name)
-        
+
         folder_names.append(subfolders)
+        x+=1
+    
+    coba = input(f"Masukkan nama grouping folder tingkat kedalaman {x+1}: ")
+    group.append(coba)
+
+    print(group)
 
     foldering.create_folders(os.path.join(BASIS_FOLDER, nama_project), isi_kedalaman, folder_names, BASIS_FOLDER)
     write_text(nama_project, group)
@@ -87,3 +94,5 @@ elif int(decision) == 2:
 
     if pilih_menu == "1":
         print("UHUYYYY")
+
+
