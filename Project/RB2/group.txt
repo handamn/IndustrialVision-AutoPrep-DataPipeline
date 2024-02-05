@@ -1,0 +1,5 @@
+Land_Site: Laboratory Outline Inline
+
+Steering_Wheel: LHD RHD
+Box_Type: Box1 Box2 Box3
+Relay_Code: B L A N K
