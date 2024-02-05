@@ -96,3 +96,7 @@ elif int(decision) == 2:
     
     elif pilih_menu == "2":
         functioning.pick_rand(base_folder_menu_1)
+    
+    elif pilih_menu == "3":
+        print(base_folder_menu_1)
+        functioning.labeling(base_folder_menu_1)
