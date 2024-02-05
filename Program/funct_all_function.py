@@ -122,5 +122,26 @@ def pick_rand(route_path):
 
 
 ##### labeling function
-subprocess.run("labelimg")
+def labeling(route_path):
+    group_route = route_path + "group.txt"
+    base_route = route_path + "1_Stock_Photo"
+
+    list_of_input = data_input_default(group_route)
+
+    for i in range(len(list_of_input)):
+        base_route += "\\" +list_of_input[i]
+
+        if i == len(list_of_input)-1:
+            code = list_of_input[i]
+    
+    automate_route = base_route + "\\X_Automasi"
+    image_route = automate_route + "\\images"
+    label_route = automate_route + "\\labels\\classes.txt"
+
+    command = ["labelimg",
+                image_route,
+                label_route]
+
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
 ###############################################
