@@ -4,6 +4,7 @@ import os
 import time
 from datetime import datetime
 import cv2
+import subprocess
 
 
 
@@ -78,6 +79,7 @@ print("=========================================================================
 ############################ End of Collections
 
 
+##### pick_rand funtion
 def pick_rand(route_path):
     group_route = route_path + "group.txt"
     image_route = route_path + "1_Stock_Photo"
@@ -115,3 +117,10 @@ def pick_rand(route_path):
         yaml.dump(data, file, default_flow_style=False, sort_keys=False)
 
     print("FINISH")
+
+###############################################
+
+
+##### labeling function
+subprocess.run("labelimg")
+###############################################
