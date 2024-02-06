@@ -5,7 +5,6 @@ import funct_all_function as functioning
 
 base_folder = "F:\\repo_generator\\V1\\data_generator\\Project\\"
 
-
 def print_menu():
     print("\nProgram Generator\n")
     print("Pilih Menu :")
@@ -74,6 +73,19 @@ if int(decision) == 1:
     foldering.create_folders(os.path.join(base_folder, nama_project), isi_kedalaman, folder_names, base_folder)
     write_text(nama_project, group)
 
+    crop = input("potong dimana? :")
+
+    indeks = group.index(crop)
+
+    source = base_folder + "\\" + nama_project + "\\3_Base" 
+
+    list_route= []
+
+    for i in range(len(group)):
+        if group[i] != crop :
+            source += "\\" + group[i]
+
+
 elif int(decision) == 2:
     dir_list = os.listdir(base_folder) 
 
@@ -95,11 +107,9 @@ elif int(decision) == 2:
         functioning.capture(base_folder_menu_1)
     
     elif pilih_menu == "2":
-        print(base_folder_menu_1)
         functioning.pick_rand(base_folder_menu_1)
     
     elif pilih_menu == "3":
-        print(base_folder_menu_1)
         functioning.labeling(base_folder_menu_1)
     
     elif pilih_menu == "4":
