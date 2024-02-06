@@ -25,7 +25,7 @@ def print_menu():
     return hasil_menu
 
 def write_text(project_name, list_name):
-    file_name = os.path.join(BASIS_FOLDER, project_name) + "\group.txt"
+    file_name = os.path.join(base_folder, project_name) + "\group.txt"
     with open(file_name, 'w+') as f:
         for items in list_name:
             f.write('%s\n' %items)
@@ -71,7 +71,7 @@ if int(decision) == 1:
     coba = input(f"Masukkan nama grouping folder tingkat kedalaman {x+1}: ")
     group.append(coba)
 
-    foldering.create_folders(os.path.join(BASIS_FOLDER, nama_project), isi_kedalaman, folder_names, BASIS_FOLDER)
+    foldering.create_folders(os.path.join(base_folder, nama_project), isi_kedalaman, folder_names, base_folder)
     write_text(nama_project, group)
 
 elif int(decision) == 2:
@@ -95,6 +95,7 @@ elif int(decision) == 2:
         functioning.capture(base_folder_menu_1)
     
     elif pilih_menu == "2":
+        print(base_folder_menu_1)
         functioning.pick_rand(base_folder_menu_1)
     
     elif pilih_menu == "3":
