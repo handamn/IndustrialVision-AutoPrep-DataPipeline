@@ -77,13 +77,7 @@ if int(decision) == 1:
 
     indeks = group.index(crop)
 
-    source = base_folder + "\\" + nama_project + "\\3_Base" 
-
-    list_route= []
-
-    for i in range(len(group)):
-        if group[i] != crop :
-            source += "\\" + group[i]
+    foldering.cut_folder(nama_project, len(group), indeks)
 
 
 elif int(decision) == 2:
