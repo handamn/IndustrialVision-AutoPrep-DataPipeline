@@ -78,10 +78,6 @@ if int(decision) == 1:
     crop = input("potong dimana? :")
     indeks = int(group.index(crop))
 
-    foldering.copy_folder(nama_project, int(len(group)), indeks+1)
-    time.sleep(1)
-
-    foldering.cut_folder(nama_project)
 
 
 elif int(decision) == 2:
