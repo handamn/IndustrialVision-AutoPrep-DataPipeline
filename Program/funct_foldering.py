@@ -22,7 +22,7 @@ def create_folders(folder_name, folder_depths, folder_names, BASE_FOLDER, curren
         
         # Duplikasi struktur folder 1_Stock_Photo ke 2_Train_Artefact
         for folder in stock_photo_structure:
-            train_artefact_folder = folder.replace("1_Stock_Photo", "2_Train_Artefact")
+            train_artefact_folder = folder.replace("1_Stock_Photo", "3_Base")
             os.makedirs(train_artefact_folder)
             duplicate_structure(folder, train_artefact_folder)
     
@@ -113,7 +113,7 @@ def list_all_subfolders_with_longest(path):
     return subfolders, parsed_deepest_path
 
 
-def cut_folder(name_project, group_len, index_group):
+def copy_folder(name_project, group_len, index_group):
     script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
     clean_script = script_directory.split('\\')
     base_route = ""
@@ -142,4 +142,24 @@ def cut_folder(name_project, group_len, index_group):
     delete_route += "\\" + "3_Base"
 
     shutil.copytree(copy_route, dest_route)
+    #shutil.rmtree(delete_route)
+
+
+def cut_folder(name_project):
+    script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+    clean_script = script_directory.split('\\')
+    base_route = ""
+    for i in range(len(clean_script)):
+        if clean_script[i] != "Program":
+            if (i==0):
+                base_route = clean_script[i]
+            
+            else :
+                base_route += "\\" + clean_script[i]
+    
+    base_route += "\\" + "Project" + "\\" + name_project
+
+    delete_route = base_route
+    delete_route += "\\" + "3_Base"
+
     shutil.rmtree(delete_route)
