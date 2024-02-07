@@ -73,11 +73,15 @@ if int(decision) == 1:
     foldering.create_folders(os.path.join(base_folder, nama_project), isi_kedalaman, folder_names, base_folder)
     write_text(nama_project, group)
 
+    print(group)
+
     crop = input("potong dimana? :")
+    indeks = int(group.index(crop))
 
-    indeks = group.index(crop)
+    foldering.copy_folder(nama_project, int(len(group)), indeks+1)
+    time.sleep(1)
 
-    foldering.cut_folder(nama_project, len(group), indeks)
+    foldering.cut_folder(nama_project)
 
 
 elif int(decision) == 2:
