@@ -32,21 +32,14 @@ def display_list_recursive(lst):
     else:
         print(lst)
 
-def generator_last_folder(val):
-    adam ={}
-    if isinstance(val, list):
-        for item in val:
-            generator_last_folder(item)
+
+def flatten_list(main_list):
+    flat = []
+    for sublist in main_list:
+        for item in sublist:
+            flat.extend(item)
     
-    else:
-        print("=========")
-        print(val)
-        print("=========")
-        adam[val] = input("ISI : ")
-        print(adam) 
-        print("")
-    
-    print(adam)
+    return flat
 
 
 
@@ -95,15 +88,27 @@ for i in range(len(value_list)):
         Create_Dir_Base(Create_Dir_list)
         print("")
 
-
 Storing_Group_Name = Store_Dir_Base(value_list)
 
+print(value_list)
 
 
+sub_folder = {}
+key_sub_folder = flatten_list(Storing_Group_Name)
+
+for i in range(len(key_sub_folder)):
+    count_subfolder_2 = int(input("Enter How Much Subfolder for " + key_sub_folder[i] +" : "))
+
+    sub_folder_2 = []
+
+    for j in range(count_subfolder_2):
+        Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j) + "- : "))
+        sub_folder_2.append(Name_Sub_2)
+    
+    sub_folder[key_sub_folder[i]] = sub_folder_2
 
 
+print(sub_folder)
 print("")
-display_list_recursive(Storing_Group_Name)
+print(value_list)
 
-print("")
-generator_last_folder(Storing_Group_Name)
