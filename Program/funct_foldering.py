@@ -32,16 +32,6 @@ def display_list_recursive(lst):
     else:
         print(lst)
 
-"""
-def flatten_list(main_list):
-    flat = []
-    for sublist in main_list:
-        for item in sublist:
-            flat.extend(item)
-    
-    return flat
-
-"""
 
 def flatten_list(nested_list):
     flattened_list = []
@@ -172,62 +162,31 @@ for item in key_sub_folder:
         
     count_Length_Folder_Depth+=1
 
+print("====================")
 
-print("")
+for item in key_sub_folder:
+    for item2 in A_sub_folder[item]:
+        print(item + "\\" + item2 + "\\images")
+        print(item + "\\" + item2 + "\\labels")
+        print(item + "\\" + item2 + "\\X_Automate")
+        print(item + "\\" + item2 + "\\X_Automate\\images")
+        print(item + "\\" + item2 + "\\X_Automate\\labels")
 
+print("====================")
 
-
-print("")
-print("---directory_dict---")
-print(directory_dict)
-
-print("")
-print("---sub_folder---")
-print(sub_folder)
-
-print("")
-print("---key_list---")
-print(key_list)
-
-print("")
-print("---value_list---")
-print(value_list)
-print(Length_Folder_Depth)
-
-print("")
-print("---new_value_list---")
-print(new_value_list)
-print(Length_Folder_Depth_2)
-
-print("")
-print("---Storing_Group_Name---")
-print(Storing_Group_Name)
-print(Storing_Group_Name[-2])
-
-print("")
-print("---Storing_Group_Name_2---")
-print(Storing_Group_Name_2)
-
-print("")
-print("---Create_Dir_list---")
-print(Create_Dir_list)
-
-print("")
-print("---Create_Dir_list_2---")
-print(Create_Dir_list_2)
-
-print("")
-print("---A_sub_folder---")
-print(A_sub_folder)
-
-print("")
-print("---B_sub_folder---")
-print(B_sub_folder)
-
-print("")
-print("---key_sub_folder---")
-print(key_sub_folder)
-
-print("")
-print("---key_sub_folder_2---")
-print(key_sub_folder_2)
+count_Length_Folder_Depth = 0
+for item in key_sub_folder:
+    for item2 in B_sub_folder[item]:
+        x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\models")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\train")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\val")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\test")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
+        print(key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
+        
+    count_Length_Folder_Depth+=1
