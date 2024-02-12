@@ -1,10 +1,23 @@
 import os
 import sys
 
-script_directory = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
+##############################
+def print_combinations(value_list, current_combination=[]):
+    if not value_list:
+        # Base case: If value_list is empty, print the current combination
+        #print("\\".join(current_combination))
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "\\".join(current_combination))
+    else:
+        # Recursive case: Iterate through each item in the current list and call the function recursively
+        for item in value_list[0]:
+            print_combinations(value_list[1:], current_combination + [item])
 
-group = []
-sub = []
+
+
+##############################
+
+
+script_directory = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 
 directory_dict = {}
 
@@ -16,25 +29,23 @@ Folder_Depth = int(input("Enter Folder Depth : "))
 
 for i in range(Folder_Depth - 1):
     Name_Group = str(input("Enter Grouping Name for depth " + str(i+1) + " : "))
-    group.append(Name_Group)
-    
     count_subfolder = int(input("Enter How Much Subfolder for " + Name_Group + " : "))
-    
-    sub.append([])
 
-    di = []
+    sub_folder = []
 
     for j in range (count_subfolder):
         Name_Sub = str(input("Enter Sub Name for " + Name_Group + " Sub " + str(j+1) + " : "))
-        sub[i].append(Name_Sub)
-
-        di.append(Name_Sub)
+        sub_folder.append(Name_Sub)
     
-    directory_dict[Name_Group] = di
+    directory_dict[Name_Group] = sub_folder
 
-print(sub)
-    
-    
-print("")
 
-print(directory_dict)
+key_list = list(directory_dict.keys())
+value_list = list(directory_dict.values())
+
+
+template = []
+
+for i in range(len(value_list)):
+    template.append(value_list[i])
+    print_combinations(template)
