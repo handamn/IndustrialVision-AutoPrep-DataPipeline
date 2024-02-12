@@ -7,6 +7,8 @@ def print_combinations(value_list, current_combination=[]):
         # Base case: If value_list is empty, print the current combination
         #print("\\".join(current_combination))
         print(script_directory + project_location + "\\" + Name_Project + "\\" + "\\".join(current_combination))
+        #return script_directory + project_location + "\\" + Name_Project + "\\" + "\\".join(current_combination)
+    
     else:
         # Recursive case: Iterate through each item in the current list and call the function recursively
         for item in value_list[0]:
@@ -36,6 +38,7 @@ for i in range(Folder_Depth - 1):
     for j in range (count_subfolder):
         Name_Sub = str(input("Enter Sub Name for " + Name_Group + " Sub " + str(j+1) + " : "))
         sub_folder.append(Name_Sub)
+
     
     directory_dict[Name_Group] = sub_folder
 
@@ -44,8 +47,23 @@ key_list = list(directory_dict.keys())
 value_list = list(directory_dict.values())
 
 
-template = []
+Create_Dir_list = []
+tes = []
 
 for i in range(len(value_list)):
-    template.append(value_list[i])
-    print_combinations(template)
+    if i+1 == len(value_list):
+        print("masuk disini")
+        print("")
+        Create_Dir_list.append(value_list[i])
+        print_combinations(Create_Dir_list)
+        print("")
+
+    else:
+        Create_Dir_list.append(value_list[i])
+        print_combinations(Create_Dir_list)
+        print("")
+
+print(len(value_list))
+print(Create_Dir_list[-1])
+print("===============")
+
