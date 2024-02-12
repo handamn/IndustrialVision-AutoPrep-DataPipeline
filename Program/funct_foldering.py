@@ -2,16 +2,16 @@ import os
 import sys
 
 ##############################
-def Create_Dir_Base(value_list, current_combination=[]):
+def Create_Dir_Base(branch, value_list, current_combination=[]):
     #os.mkdir(script_directory + project_location)
     if not value_list:
-        path_create = script_directory + project_location + "\\" + Name_Project + "\\" + "\\".join(current_combination)
+        path_create = script_directory + project_location + "\\" + Name_Project + "\\" + branch + "\\" + "\\".join(current_combination)
         print(path_create)
         #os.mkdir(path_create)
 
     else:
         for item in value_list[0]:
-            Create_Dir_Base(value_list[1:], current_combination + [item])
+            Create_Dir_Base(branch, value_list[1:], current_combination + [item])
 
 
 def Store_Dir_Base(value_list, current_combination=[]):
@@ -72,6 +72,14 @@ for i in range(Folder_Depth - 1):
 key_list = list(directory_dict.keys())
 value_list = list(directory_dict.values())
 
+
+potong = str(input("potong dimana : "))
+ind = int(key_list.index(potong))
+
+new_value_list = value_list[ind+1:]
+
+
+
 Create_Dir_list = []
 
 for i in range(len(value_list)):
@@ -79,18 +87,41 @@ for i in range(len(value_list)):
         print("masuk disini")
         print("")
         Create_Dir_list.append(value_list[i])
-        Create_Dir_Base(Create_Dir_list)
+        Create_Dir_Base("1_Stock_Photo",Create_Dir_list)
         print("")
 
     else:
         print("")
         Create_Dir_list.append(value_list[i])
-        Create_Dir_Base(Create_Dir_list)
+        Create_Dir_Base("1_Stock_Photo",Create_Dir_list)
         print("")
 
 Storing_Group_Name = Store_Dir_Base(value_list)
 
-print(value_list)
+
+Create_Dir_list_2 = []
+
+for i in range(len(new_value_list)):
+    if i+1 == len(new_value_list):
+        print("masuk disini")
+        print("")
+        Create_Dir_list_2.append(new_value_list[i])
+        Create_Dir_Base("2_Train_Artefact", Create_Dir_list_2)
+        print("")
+    
+    else:
+        print("")
+        Create_Dir_list_2.append(new_value_list[i])
+        Create_Dir_Base("2_Train_Artefact", Create_Dir_list_2)
+
+Storing_Group_Name_2 = Store_Dir_Base(new_value_list)
+
+"""
+print(Storing_Group_Name)
+print(Storing_Group_Name_2)
+
+"""
+
 
 
 sub_folder = {}
@@ -108,7 +139,22 @@ for i in range(len(key_sub_folder)):
     sub_folder[key_sub_folder[i]] = sub_folder_2
 
 
+
+print("")
 print(sub_folder)
 print("")
 print(value_list)
+print("")
+print(new_value_list)
+print("")
+print(Storing_Group_Name)
+print("")
+print(Storing_Group_Name_2)
+print("")
 
+
+
+for i in range(len(sub_folder)):
+    for item in key_sub_folder:
+        for item2 in sub_folder[item]:
+            print(item + "_" + item2)
