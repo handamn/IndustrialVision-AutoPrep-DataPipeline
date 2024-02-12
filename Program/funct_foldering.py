@@ -32,6 +32,23 @@ def display_list_recursive(lst):
     else:
         print(lst)
 
+def generator_last_folder(val):
+    adam ={}
+    if isinstance(val, list):
+        for item in val:
+            generator_last_folder(item)
+    
+    else:
+        print("=========")
+        print(val)
+        print("=========")
+        adam[val] = input("ISI : ")
+        print(adam) 
+        print("")
+    
+    print(adam)
+
+
 
 ##############################
 
@@ -88,3 +105,5 @@ Storing_Group_Name = Store_Dir_Base(value_list)
 print("")
 display_list_recursive(Storing_Group_Name)
 
+print("")
+generator_last_folder(Storing_Group_Name)
