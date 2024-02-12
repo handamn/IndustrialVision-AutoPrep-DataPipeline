@@ -72,11 +72,20 @@ for i in range(Folder_Depth - 1):
 key_list = list(directory_dict.keys())
 value_list = list(directory_dict.values())
 
+Length_Folder_Depth = 1
+for i in range(len(value_list)):
+    Length_Folder_Depth *= len(value_list[i])
+
+
 
 potong = str(input("potong dimana : "))
 ind = int(key_list.index(potong))
 
 new_value_list = value_list[ind+1:]
+
+Length_Folder_Depth_2 = 1
+for i in range(len(new_value_list)):
+    Length_Folder_Depth_2 *= len(new_value_list[i])
 
 
 
@@ -116,16 +125,20 @@ for i in range(len(new_value_list)):
 
 Storing_Group_Name_2 = Store_Dir_Base(new_value_list)
 
-"""
-print(Storing_Group_Name)
-print(Storing_Group_Name_2)
 
-"""
+def sub_dir(lst):
+
+    if isinstance(lst, list):
+        for item in lst:
+            sub_dir(item)
+    else:
+        print(lst)
 
 
-
-sub_folder = {}
+A_sub_folder = {}
 key_sub_folder = flatten_list(Storing_Group_Name)
+
+
 
 for i in range(len(key_sub_folder)):
     count_subfolder_2 = int(input("Enter How Much Subfolder for " + key_sub_folder[i] +" : "))
@@ -136,25 +149,61 @@ for i in range(len(key_sub_folder)):
         Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j) + "- : "))
         sub_folder_2.append(Name_Sub_2)
     
-    sub_folder[key_sub_folder[i]] = sub_folder_2
+    A_sub_folder[key_sub_folder[i]] = sub_folder_2
 
+
+
+for item in key_sub_folder:
+    for item2 in A_sub_folder[item]:
+        print(item + "\\" + item2)
+
+print("")
+
+
+key_sub_folder_2 = flatten_list(Storing_Group_Name_2)
+
+key_sub_folder_list = list(A_sub_folder.keys())
 
 
 print("")
+print("---directory_dict---")
+print(directory_dict)
+
+print("")
+print("---sub_folder---")
 print(sub_folder)
+
 print("")
+print("---key_list---")
+print(key_list)
+
+print("")
+print("---value_list---")
 print(value_list)
+print(Length_Folder_Depth)
+
 print("")
+print("---new_value_list---")
 print(new_value_list)
+print(Length_Folder_Depth_2)
+
 print("")
+print("---Storing_Group_Name---")
 print(Storing_Group_Name)
+print(Storing_Group_Name[-2])
+
 print("")
+print("---Storing_Group_Name_2---")
 print(Storing_Group_Name_2)
+
 print("")
+print("---Create_Dir_list---")
+print(Create_Dir_list)
 
+print("")
+print("---Create_Dir_list_2---")
+print(Create_Dir_list_2)
 
-
-for i in range(len(sub_folder)):
-    for item in key_sub_folder:
-        for item2 in sub_folder[item]:
-            print(item + "_" + item2)
+print("")
+print("---A_sub_folder---")
+print(A_sub_folder)
