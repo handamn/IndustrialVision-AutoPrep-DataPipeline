@@ -32,7 +32,7 @@ def display_list_recursive(lst):
     else:
         print(lst)
 
-
+"""
 def flatten_list(main_list):
     flat = []
     for sublist in main_list:
@@ -41,7 +41,16 @@ def flatten_list(main_list):
     
     return flat
 
+"""
 
+def flatten_list(nested_list):
+    flattened_list = []
+    for item in nested_list:
+        if isinstance(item, list):
+            flattened_list.extend(flatten_list(item))
+        else:
+            flattened_list.append(item)
+    return flattened_list
 
 ##############################
 
@@ -126,43 +135,46 @@ for i in range(len(new_value_list)):
 Storing_Group_Name_2 = Store_Dir_Base(new_value_list)
 
 
-def sub_dir(lst):
-
-    if isinstance(lst, list):
-        for item in lst:
-            sub_dir(item)
-    else:
-        print(lst)
-
 
 A_sub_folder = {}
+B_sub_folder = {}
 key_sub_folder = flatten_list(Storing_Group_Name)
+key_sub_folder_2 = flatten_list(Storing_Group_Name_2)
 
 
-
-for i in range(len(key_sub_folder)):
+for i in range(Length_Folder_Depth):
     count_subfolder_2 = int(input("Enter How Much Subfolder for " + key_sub_folder[i] +" : "))
 
     sub_folder_2 = []
+    sub_folder_2a = []
 
     for j in range(count_subfolder_2):
         Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j) + "- : "))
         sub_folder_2.append(Name_Sub_2)
+
+        if (i+1) > (Length_Folder_Depth-Length_Folder_Depth_2):
+            sub_folder_2a.append(Name_Sub_2)
     
     A_sub_folder[key_sub_folder[i]] = sub_folder_2
-
+    B_sub_folder[key_sub_folder[i]] = sub_folder_2a
 
 
 for item in key_sub_folder:
     for item2 in A_sub_folder[item]:
         print(item + "\\" + item2)
 
+print("====================")
+count_Length_Folder_Depth = 0
+for item in key_sub_folder:
+    for item2 in B_sub_folder[item]:
+        x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
+        print(key_sub_folder_2[x] + "\\" + item2)
+        
+    count_Length_Folder_Depth+=1
+
+
 print("")
 
-
-key_sub_folder_2 = flatten_list(Storing_Group_Name_2)
-
-key_sub_folder_list = list(A_sub_folder.keys())
 
 
 print("")
@@ -207,3 +219,15 @@ print(Create_Dir_list_2)
 print("")
 print("---A_sub_folder---")
 print(A_sub_folder)
+
+print("")
+print("---B_sub_folder---")
+print(B_sub_folder)
+
+print("")
+print("---key_sub_folder---")
+print(key_sub_folder)
+
+print("")
+print("---key_sub_folder_2---")
+print(key_sub_folder_2)
