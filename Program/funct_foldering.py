@@ -59,6 +59,7 @@ for i in range(len(value_list)):
         print("")
 
     else:
+        print("")
         Create_Dir_list.append(value_list[i])
         print_combinations(Create_Dir_list)
         print("")
@@ -66,4 +67,57 @@ for i in range(len(value_list)):
 print(len(value_list))
 print(Create_Dir_list[-1])
 print("===============")
+print("")
+print("===============")
+
+def generate_combinations2(value_list, current_combination=[]):
+    if not value_list:
+        # Base case: If value_list is empty, return the current combination
+        return "\\".join(current_combination)
+    else:
+        combinations = []
+        # Recursive case: Iterate through each item in the current list and call the function recursively
+        for item in value_list[0]:
+            combinations.append(generate_combinations2(value_list[1:], current_combination + [item]))
+        return combinations
+
+combinations2 = generate_combinations2(value_list)
+
+# Print the combinations
+for combination in combinations2:
+    print(combination)
+
+print("===============")
+print("")
+print("===============")
+
+print(len(combinations2))
+print(combinations2)
+print(type(combinations2))
+
+print("===============")
+print("")
+print("===============")
+
+print(value_list)
+
+"""
+for i in range(len(combinations2)):
+    for j in range(len(combinations2[i])):
+        for k in range(len(combinations2[i][j])):
+            print(combinations2[i][j][k])
+
+"""
+
+
+
+def display_list_recursive(lst):
+    if isinstance(lst, list):
+        for item in lst:
+            display_list_recursive(item)
+    else:
+        print(lst)
+
+print("")
+display_list_recursive(combinations2)
 
