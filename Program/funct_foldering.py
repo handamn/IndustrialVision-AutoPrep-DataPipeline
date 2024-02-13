@@ -6,7 +6,7 @@ def Create_Dir_Base(base, branch, value_list, current_combination=[]):
     if not value_list:
         path_create = base + branch + "\\" + "\\".join(current_combination)
         #print(path_create)
-        print(path_create)
+        os.mkdir(path_create)
 
     else:
         for item in value_list[0]:
@@ -34,6 +34,14 @@ def flatten_list(nested_list):
             flattened_list.append(item)
     return flattened_list
 
+
+def write_text(link_path, list_name):
+    file_name = link_path + "\group.txt"
+    with open(file_name, 'w+') as f:
+        for items in list_name:
+            f.write('%s\n' %items)
+    f.close()
+
 ##############################
 
 
@@ -50,9 +58,9 @@ Folder_Depth = int(input("Enter Folder Depth : "))
 final_path = script_directory + project_location + "\\" + Name_Project + "\\"
 st_path = final_path + "1_Stock_Photo\\"
 nd_path = final_path + "2_Train_Artefact\\"
-print(final_path)
-print(st_path)
-print(nd_path)
+os.mkdir(final_path)
+os.mkdir(st_path)
+os.mkdir(nd_path)
 
 for i in range(Folder_Depth - 1):
     Name_Group = str(input("Enter Grouping Name for depth " + str(i+1) + " : "))
@@ -70,6 +78,8 @@ for i in range(Folder_Depth - 1):
 key_list = list(directory_dict.keys())
 value_list = list(directory_dict.values())
 
+write_text(final_path, key_list)
+
 Length_Folder_Depth = 1
 for i in range(len(value_list)):
     Length_Folder_Depth *= len(value_list[i])
@@ -83,6 +93,7 @@ new_value_list = value_list[ind+1:]
 Length_Folder_Depth_2 = 1
 for i in range(len(new_value_list)):
     Length_Folder_Depth_2 *= len(new_value_list[i])
+
 
 
 Create_Dir_list = []
@@ -137,39 +148,39 @@ for i in range(Length_Folder_Depth):
 
 for item in key_sub_folder:
     for item2 in A_sub_folder[item]:
-        print(final_path + "1_Stock_Photo" + "\\" + item + "\\" + item2)
+        os.mkdir(st_path + item + "\\" + item2)
 
 count_Length_Folder_Depth = 0
 for item in key_sub_folder:
     for item2 in B_sub_folder[item]:
         x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2)
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2)
         
     count_Length_Folder_Depth+=1
 
 
 for item in key_sub_folder:
     for item2 in A_sub_folder[item]:
-        print(final_path + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\images")
-        print(final_path + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\labels")
-        print(final_path + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\X_Automate")
-        print(final_path + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\X_Automate\\images")
-        print(final_path + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
+        os.mkdir(st_path + item + "\\" + item2 + "\\images")
+        os.mkdir(st_path + item + "\\" + item2 + "\\labels")
+        os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate")
+        os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate\\images")
+        os.mkdir(st_path + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
 
 
 count_Length_Folder_Depth = 0
 for item in key_sub_folder:
     for item2 in B_sub_folder[item]:
         x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\models")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\train")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\val")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\test")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
-        print(final_path + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\models")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
+        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
         
     count_Length_Folder_Depth+=1
