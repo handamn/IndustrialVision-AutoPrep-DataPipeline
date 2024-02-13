@@ -151,26 +151,27 @@ for i in range(Length_Folder_Depth):
 
 for item in key_sub_folder:
     for item2 in A_sub_folder[item]:
-        print(item + "\\" + item2)
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "1_Stock_Photo" + "\\" + item + "\\" + item2)
 
 print("====================")
 count_Length_Folder_Depth = 0
 for item in key_sub_folder:
     for item2 in B_sub_folder[item]:
         x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
-        print(key_sub_folder_2[x] + "\\" + item2)
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2)
         
     count_Length_Folder_Depth+=1
+
 
 print("====================")
 
 for item in key_sub_folder:
     for item2 in A_sub_folder[item]:
-        print(item + "\\" + item2 + "\\images")
-        print(item + "\\" + item2 + "\\labels")
-        print(item + "\\" + item2 + "\\X_Automate")
-        print(item + "\\" + item2 + "\\X_Automate\\images")
-        print(item + "\\" + item2 + "\\X_Automate\\labels")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\images")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\labels")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\X_Automate")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\X_Automate\\images")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "1_Stock_Photo" + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
 
 print("====================")
 
@@ -178,15 +179,15 @@ count_Length_Folder_Depth = 0
 for item in key_sub_folder:
     for item2 in B_sub_folder[item]:
         x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\models")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\train")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\val")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\test")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
-        print(key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\models")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\train")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\val")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\test")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
+        print(script_directory + project_location + "\\" + Name_Project + "\\" + "2_Train_Artefact" + "\\" + key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
         
     count_Length_Folder_Depth+=1
