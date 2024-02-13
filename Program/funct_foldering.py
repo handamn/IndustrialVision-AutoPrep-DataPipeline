@@ -88,14 +88,16 @@ def master_program(base_folder):
     key_list = list(directory_dict.keys())
     value_list = list(directory_dict.values())
 
+    Last_Name_Group = str(input("Enter Grouping Name for depth " + str(Folder_Depth) + " : "))
+    key_list.append(Last_Name_Group)
+    write_text(final_path, key_list)
+
     potong = str(input("Group Tier to Combine : "))
     ind = int(key_list.index(potong))
     new_value_list = value_list[ind+1:]
 
     Length_Folder_Depth = length_measure(value_list)
-    Length_Folder_Depth_2 = length_measure(new_value_list)
-
-    write_text(final_path, key_list)    
+    Length_Folder_Depth_2 = length_measure(new_value_list)    
 
     create_folder(final_path, value_list, "1_Stock_Photo")
     Storing_Group_Name = Store_Dir_Base(value_list)
@@ -109,7 +111,7 @@ def master_program(base_folder):
     key_sub_folder = flatten_list(Storing_Group_Name)
     key_sub_folder_2 = flatten_list(Storing_Group_Name_2)
 
-
+    
     for i in range(Length_Folder_Depth):
         count_subfolder_2 = int(input("Enter How Much Subfolder for " + key_sub_folder[i] +" : "))
 
