@@ -111,7 +111,7 @@ def pick_rand(route_path):
 
     
     source_route = image_route + "\\images"
-    automate_route = image_route + "\\X_Automasi"
+    automate_route = image_route + "\\X_Automate"
     sub_automate_image_route = automate_route + "\\images"
     sub_automate_labels_route = automate_route + "\\labels"
     txt_route = sub_automate_labels_route + "\\classes.txt"
@@ -147,7 +147,7 @@ def labeling(route_path):
         if i == len(list_of_input)-1:
             code = list_of_input[i]
     
-    automate_route = base_route + "\\X_Automasi"
+    automate_route = base_route + "\\X_Automate"
     image_route = automate_route + "\\images"
     label_route = automate_route + "\\labels\\classes.txt"
 
