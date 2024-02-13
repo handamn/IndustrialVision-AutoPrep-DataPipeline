@@ -5,7 +5,6 @@ import sys
 def Create_Dir_Base(base, branch, value_list, current_combination=[]):
     if not value_list:
         path_create = base + branch + "\\" + "\\".join(current_combination)
-        #print(path_create)
         os.mkdir(path_create)
 
     else:
@@ -42,145 +41,116 @@ def write_text(link_path, list_name):
             f.write('%s\n' %items)
     f.close()
 
+
+def create_folder(source_path, list_value, subject_folder):
+    Create_Dir_list_3 = []
+    for i in range(len(list_value)):
+        if i+1 == len(list_value):
+            Create_Dir_list_3.append(list_value[i])
+            Create_Dir_Base(source_path, subject_folder, Create_Dir_list_3)
+        
+        else :
+            Create_Dir_list_3.append(list_value[i])
+            Create_Dir_Base(source_path, subject_folder, Create_Dir_list_3)
+
+
+def length_measure(list_value):
+    length_count = 1
+    for i in range(len(list_value)):
+        length_count *= len(list_value[i])
+    return length_count
+
 ##############################
 
+def master_program(base_folder):
+    Name_Project = str(input("Enter Name Project : "))
+    Folder_Depth = int(input("Enter Folder Depth : "))
 
-script_directory = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
+    final_path = base_folder + "\\" + Name_Project + "\\"
+    st_path = final_path + "1_Stock_Photo\\"
+    nd_path = final_path + "2_Train_Artefact\\"
 
-directory_dict = {}
+    os.mkdir(final_path)
+    os.mkdir(st_path)
+    os.mkdir(nd_path)
 
-project_location = "\\Project"
+    directory_dict = {}
 
+    for i in range(Folder_Depth - 1):
+        Name_Group = str(input("Enter Grouping Name for depth " + str(i+1) + " : "))
+        count_subfolder = int(input("Enter How Much Subfolder for " + Name_Group + " : "))
+        sub_folder = []
+        for j in range (count_subfolder):
+            Name_Sub = str(input("Enter Sub Name for " + Name_Group + " Sub " + str(j+1) + " : "))
+            sub_folder.append(Name_Sub)
+        directory_dict[Name_Group] = sub_folder
 
-Name_Project = str(input("Enter Name Project : "))
-Folder_Depth = int(input("Enter Folder Depth : "))
+    key_list = list(directory_dict.keys())
+    value_list = list(directory_dict.values())
 
-final_path = script_directory + project_location + "\\" + Name_Project + "\\"
-st_path = final_path + "1_Stock_Photo\\"
-nd_path = final_path + "2_Train_Artefact\\"
-os.mkdir(final_path)
-os.mkdir(st_path)
-os.mkdir(nd_path)
+    potong = str(input("Group Tier to Combine : "))
+    ind = int(key_list.index(potong))
+    new_value_list = value_list[ind+1:]
 
-for i in range(Folder_Depth - 1):
-    Name_Group = str(input("Enter Grouping Name for depth " + str(i+1) + " : "))
-    count_subfolder = int(input("Enter How Much Subfolder for " + Name_Group + " : "))
+    Length_Folder_Depth = length_measure(value_list)
+    Length_Folder_Depth_2 = length_measure(new_value_list)
 
-    sub_folder = []
+    write_text(final_path, key_list)    
 
-    for j in range (count_subfolder):
-        Name_Sub = str(input("Enter Sub Name for " + Name_Group + " Sub " + str(j+1) + " : "))
-        sub_folder.append(Name_Sub)
+    create_folder(final_path, value_list, "1_Stock_Photo")
+    Storing_Group_Name = Store_Dir_Base(value_list)
 
-    directory_dict[Name_Group] = sub_folder
-
-
-key_list = list(directory_dict.keys())
-value_list = list(directory_dict.values())
-
-write_text(final_path, key_list)
-
-Length_Folder_Depth = 1
-for i in range(len(value_list)):
-    Length_Folder_Depth *= len(value_list[i])
-
-
-potong = str(input("potong dimana : "))
-ind = int(key_list.index(potong))
-
-new_value_list = value_list[ind+1:]
-
-Length_Folder_Depth_2 = 1
-for i in range(len(new_value_list)):
-    Length_Folder_Depth_2 *= len(new_value_list[i])
+    create_folder(final_path, new_value_list, "2_Train_Artefact")
+    Storing_Group_Name_2 = Store_Dir_Base(new_value_list)
 
 
-
-Create_Dir_list = []
-
-for i in range(len(value_list)):
-    if i+1 == len(value_list):
-        Create_Dir_list.append(value_list[i])
-        Create_Dir_Base(final_path, "1_Stock_Photo",Create_Dir_list)
-
-    else:
-        Create_Dir_list.append(value_list[i])
-        Create_Dir_Base(final_path, "1_Stock_Photo",Create_Dir_list)
-
-Storing_Group_Name = Store_Dir_Base(value_list)
-
-Create_Dir_list_2 = []
-
-for i in range(len(new_value_list)):
-    if i+1 == len(new_value_list):
-        Create_Dir_list_2.append(new_value_list[i])
-        Create_Dir_Base(final_path, "2_Train_Artefact", Create_Dir_list_2)
-    
-    else:
-        Create_Dir_list_2.append(new_value_list[i])
-        Create_Dir_Base(final_path, "2_Train_Artefact", Create_Dir_list_2)
-
-Storing_Group_Name_2 = Store_Dir_Base(new_value_list)
+    A_sub_folder = {}
+    B_sub_folder = {}
+    key_sub_folder = flatten_list(Storing_Group_Name)
+    key_sub_folder_2 = flatten_list(Storing_Group_Name_2)
 
 
-A_sub_folder = {}
-B_sub_folder = {}
-key_sub_folder = flatten_list(Storing_Group_Name)
-key_sub_folder_2 = flatten_list(Storing_Group_Name_2)
+    for i in range(Length_Folder_Depth):
+        count_subfolder_2 = int(input("Enter How Much Subfolder for " + key_sub_folder[i] +" : "))
 
+        sub_folder_2 = []
+        sub_folder_2a = []
 
-for i in range(Length_Folder_Depth):
-    count_subfolder_2 = int(input("Enter How Much Subfolder for " + key_sub_folder[i] +" : "))
+        for j in range(count_subfolder_2):
+            Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j) + "- : "))
+            sub_folder_2.append(Name_Sub_2)
 
-    sub_folder_2 = []
-    sub_folder_2a = []
-
-    for j in range(count_subfolder_2):
-        Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j) + "- : "))
-        sub_folder_2.append(Name_Sub_2)
-
-        if (i+1) > (Length_Folder_Depth-Length_Folder_Depth_2):
-            sub_folder_2a.append(Name_Sub_2)
-    
-    A_sub_folder[key_sub_folder[i]] = sub_folder_2
-    B_sub_folder[key_sub_folder[i]] = sub_folder_2a
-
-
-for item in key_sub_folder:
-    for item2 in A_sub_folder[item]:
-        os.mkdir(st_path + item + "\\" + item2)
-
-count_Length_Folder_Depth = 0
-for item in key_sub_folder:
-    for item2 in B_sub_folder[item]:
-        x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2)
+            if (i+1) > (Length_Folder_Depth-Length_Folder_Depth_2):
+                sub_folder_2a.append(Name_Sub_2)
         
-    count_Length_Folder_Depth+=1
+        A_sub_folder[key_sub_folder[i]] = sub_folder_2
+        B_sub_folder[key_sub_folder[i]] = sub_folder_2a
 
 
-for item in key_sub_folder:
-    for item2 in A_sub_folder[item]:
-        os.mkdir(st_path + item + "\\" + item2 + "\\images")
-        os.mkdir(st_path + item + "\\" + item2 + "\\labels")
-        os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate")
-        os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate\\images")
-        os.mkdir(st_path + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
+    for item in key_sub_folder:
+        for item2 in A_sub_folder[item]:
+            os.mkdir(st_path + item + "\\" + item2)
+            os.mkdir(st_path + item + "\\" + item2 + "\\images")
+            os.mkdir(st_path + item + "\\" + item2 + "\\labels")
+            os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate")
+            os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate\\images")
+            os.mkdir(st_path + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
 
+    count_Length_Folder_Depth = 0
+    for item in key_sub_folder:
+        for item2 in B_sub_folder[item]:
+            x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2)
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\models")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
+            
+        count_Length_Folder_Depth+=1
 
-count_Length_Folder_Depth = 0
-for item in key_sub_folder:
-    for item2 in B_sub_folder[item]:
-        x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\models")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
-        os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
-        
-    count_Length_Folder_Depth+=1
