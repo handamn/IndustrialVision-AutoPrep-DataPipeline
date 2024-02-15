@@ -6,6 +6,14 @@ import random
 import shutil
 import yaml
 import subprocess
+import torch
+import pandas as pd
+from tqdm import tqdm
+import csv
+
+from pathlib import path
+from models.experimental import attempt_load
+from utils.general import non_max_suppression
 
 def print_menu():
     print("\nProgram Generator\n")
@@ -65,6 +73,28 @@ def simple_route(main_route):
     automate_route = base_route + "\\X_Automate"
 
     return base_route, automate_route
+
+
+def read_csv(file_name):
+    try:
+        with open(file_name, 'r', newline='') as file_csv:
+            reader = csv.reader(file_csv)
+            data = [row[0] for row in reader]  # Ambil hanya kolom pertama dari setiap baris
+            return sorted(data)  # Mengurutkan data
+    except FileNotFoundError:
+        return []
+
+
+def write_csv(file_name):
+    with open(file_name, 'w', newline='') as file_csv:
+        writer = csv.writer(file_csv)
+        for item in data:
+            writer.writerow([item])
+
+
+def add_data(data, input_string):
+    data.append(input_string)
+    return sorted(data)
 
 
 def capture(route_path):
@@ -176,3 +206,60 @@ def train(route_path, program_route):
                 "--patience", patience_size_source]
 
     run_python_file(train_file, argument)
+
+
+def Auto_Anotate(route_path, program_route):
+    base_route, automate_route = simple_route(route_path)
+    
+    model_type = str(input("Enter Model Train              (ex : train1)  : "))
+
+    folder_train_images = base_route + "\\images"
+    folder_train_labels = base_route + "\\labels"
+    folder_model = base_route + "\\Models\\" + model_type + "\\weights\\best.pt"
+    yolo_route = program_route + "\\yolov5"
+    model = torch.hub.load(yolo_route, "custom", path=folder_model, source = "local", force_reload = True)
+
+    train_list = os.listdir(folder_train_images)
+    
+    for name in tqdm(train_list, desc= "Processing Images"):
+        label_name = f"{name.split('.')[0]}.txt"
+        label_directory = os.path.join(folder_train_labels, label_name)
+
+        image_directory = os.path.join(folder_train_images, name)
+        results = model(image_directory, name)
+        xyxy_results = results.pandas().xyxy[0]
+
+        if not hasil.empty:
+            xmin = xyxy_results['xmin'][0]
+            ymin = xyxy_results['ymin'][0]
+            xmax = xyxy_results['xmax'][0]
+            ymax = xyxy_results['ymax'][0]
+            group = xyxy_resulst['class'][0]
+
+            index_class = 0
+
+            xcenter = ((xmax+xmin)/2)/640
+            ycenter = ((ymax+ymin)/2)/480
+            width = (xmax-xmin)/640
+            height = (ymax-ymin)/480
+
+            text = str(index_class) + " " + str(ycenter) + " " + str(width) + " " + str(height)
+
+            with open(label_directory, "w") as f:
+                f.write(text)
+        
+        words = base_route.split('\\')
+        code_type = words[-1]
+
+    with open(f"{folder_train_labels}/classes.txt", "w") as f:
+        f.write(code_type)
+    
+    folder_csv = base_route + "\\class_index.csv"
+
+    if not os.path.exists(folder_csv):
+        with open(fodler_csv, "w", new_line=""):
+            pass
+
+    data = read_csv(folder_csv)
+    data = add_data(data, code_type)
+    write_csv(folder_csv, datas)
