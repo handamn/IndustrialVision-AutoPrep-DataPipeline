@@ -43,3 +43,6 @@ elif decision == 2:
     
     elif pick_menu == "3":
         funct.labeling(base_folder_menu_1)
+    
+    elif pick_menu == "4":
+        funct.train(base_folder_menu_1, program_folder)
