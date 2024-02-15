@@ -41,33 +41,50 @@ def data_input_default(route):
     return dict_value_input
 
 
+def data_train_input():
+    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
+    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
+    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
+    pat_count     = input("Enter Patience            (ex : 100)             : ")
 
-def capture(route_path):
-    group_route = route_path + "group.txt"
-    image_route = route_path + "1_Stock_Photo"
+    return epochs_count, model_type, batch_count, pat_count
+
+
+def simple_route(main_route):
+    group_route = main_route + "group.txt"
+    base_route = main_route + "1_Stock_Photo"
 
     list_of_input = data_input_default(group_route)
-    image_count = int(input("Enter How Many Image      (ex : 100)             : "))
 
     for i in range(len(list_of_input)):
-        image_route += "\\" + list_of_input[i]
+        base_route += "\\" + list_of_input[i]
 
-    image_route += "\\images" 
+        if i == len(list_of_input)-1:
+            code = list_of_input[i]
+    
+    automate_route = base_route + "\\X_Automate"
 
+    return base_route, automate_route
+
+
+def capture(route_path):
+    base_route, automate_route = simple_route(route_path)
+    print(base_route)
+    print(automate_route)
+    image_count = int(input("Enter How Many Image      (ex : 100)             : "))
+
+    image_route = base_route + "\\images" 
     cap = cv2.VideoCapture(0)
 
         # Looping image save program
     for imgnum in range(image_count):
         print('Collecting image {}'.format(imgnum))
         ret, frame = cap.read()
-
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
-
         imgname = os.path.join(image_route, f'{timestamp}.jpg')
         cv2.imwrite(imgname,frame)
         cv2.imshow('frame',frame)
         time.sleep(0.0001)
-
         if cv2.waitKey(1)&0xFF ==ord('q'):
             break
 
@@ -98,21 +115,11 @@ def copy_random_images(source_folder, destination_folder, num_images):
 
 
 def pick_rand(route_path):
-    group_route = route_path + "group.txt"
-    image_route = route_path + "1_Stock_Photo"
+    base_route, automate_route = simple_route(route_path)
 
-    list_of_input = data_input_default(group_route)
     image_count = int(input("Enter How Many Image      (ex : 100)             : "))
 
-    for i in range(len(list_of_input)):
-        image_route += "\\" + list_of_input[i]
-
-        if i == len(list_of_input)-1:
-            code = list_of_input[i]
-
-    
-    source_route = image_route + "\\images"
-    automate_route = image_route + "\\X_Automate"
+    image_source_route = base_route + "\\images"
     sub_automate_image_route = automate_route + "\\images"
     sub_automate_labels_route = automate_route + "\\labels"
     txt_route = sub_automate_labels_route + "\\classes.txt"
@@ -121,8 +128,7 @@ def pick_rand(route_path):
     with open(txt_route, 'w') as file:
         file.write(code)
 
-    copy_random_images(source_route, sub_automate_image_route, image_count)
-
+    copy_random_images(image_source_route, sub_automate_image_route, image_count)
 
     data = {
         'train' : automate_route,
@@ -137,18 +143,7 @@ def pick_rand(route_path):
 
 
 def labeling(route_path):
-    group_route = route_path + "group.txt"
-    base_route = route_path + "1_Stock_Photo"
-
-    list_of_input = data_input_default(group_route)
-
-    for i in range(len(list_of_input)):
-        base_route += "\\" +list_of_input[i]
-
-        if i == len(list_of_input)-1:
-            code = list_of_input[i]
-    
-    automate_route = base_route + "\\X_Automate"
+    base_route, automate_route = simple_route(route_path)
     image_route = automate_route + "\\images"
     label_route = automate_route + "\\labels\\classes.txt"
 
@@ -160,28 +155,10 @@ def labeling(route_path):
     stdout, stderr = process.communicate()
 
 
-def data_train_input():
-    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
-    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
-    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
-    pat_count     = input("Enter Patience            (ex : 100)             : ")
-
-    return epochs_count, model_type, batch_count, pat_count
-
-def train(folder_route, program_route):
-    group_route = folder_route + "group.txt"
-    base_route = folder_route + "1_Stock_Photo"
-
-    list_of_input = data_input_default(group_route)
+def train(route_path, program_route):
+    base_route, automate_route = simple_route(route_path)
     epochs_count, model_type, batch_count, pat_count = data_train_input()
-
-    for i in range(len(list_of_input)):
-        base_route += "\\" + list_of_input[i]
-
-        if i == len(list_of_input)-1:
-            code = list_of_input[i]
     
-    automate_route = base_route + "\\X_Automate"
     yaml_route = automate_route + "\\" + code + ".yaml"
     project_source = automate_route + "\\Models"
     epochs_source = epochs_count
