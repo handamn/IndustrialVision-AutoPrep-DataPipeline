@@ -159,3 +159,28 @@ def labeling(route_path):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
 
+
+def train(menu, route_path):
+    group_route = route_path + "group.txt"
+    base_route_simplex = route_path + "1_Stock_Photo"
+    base_route_complex = route_path + ""
+
+    list_of_input = read.data_input_default(group_route)
+
+    for i in range(len(list_of_input)):
+        base_route_simplex += "\\" + list_of_input[i]
+
+        if i == len(list_of_input)-1:
+            code = list_of_input[i]
+    
+
+    automate_route = base_route_simplex + "\\X_Automasi"
+    yaml_route = automate_route + "\\" + code + ".yaml"
+
+
+    
+data_source = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/{kode_box}.yaml'
+
+data_source = f'{BASIS_FOLDER}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/{kode_box}.yaml'
+
+"""F:\\repo_generator\\V1\\data_generator\\Project\\RB4\\"""
