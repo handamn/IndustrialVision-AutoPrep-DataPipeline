@@ -1,9 +1,14 @@
 import os
 import shutil
+import sys
 import funct_foldering as foldering
 import funct_all_function as functioning
 
-base_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0]))) + "\\Project"
+ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
+project_folder = ground_folder + "\\Project"
+program_folder = ground_folder + "\\Program"
+
+print(ground_folder)
 
 print("1. New Project")
 print("2. Load Project")
@@ -12,20 +17,22 @@ decision = int(input("Enter Menu : "))
 if decision == 1:
     print(" ===== Create Project ===== ")
     print("")
-    foldering.master_program(base_folder)
+    foldering.master_program(project_folder)
 
 elif decision == 2:
-    print("Files and Directories in " + base_folder + " : ")
+    print("Files and Directories in " + project_folder + " : ")
 
-    dir_list = os.listdir(base_folder)
+    dir_list = os.listdir(project_folder)
     print(dir_list)
     print("")
 
     pick_folder = str(input("Choose Project Name : "))
     print("currently in the folder " + pick_folder)
 
-    base_folder_menu_1 = base_folder + "\\" + pick_folder + "\\"
-    
+    base_folder_menu_1 = project_folder + "\\" + pick_folder + "\\"
+
+    print(base_folder_menu_1)
+
     pick_menu = funct.print_menu()
 
     if pick_menu == "1":
