@@ -160,27 +160,42 @@ def labeling(route_path):
     stdout, stderr = process.communicate()
 
 
-def train(menu, route_path):
-    group_route = route_path + "group.txt"
-    base_route_simplex = route_path + "1_Stock_Photo"
-    base_route_complex = route_path + ""
+def data_train_input():
+    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
+    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
+    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
+    pat_count     = input("Enter Patience            (ex : 100)             : ")
 
-    list_of_input = read.data_input_default(group_route)
+    return epochs_count, model_type, batch_count, pat_count
+
+def train(folder_route, program_route):
+    group_route = folder_route + "group.txt"
+    base_route = folder_route + "1_Stock_Photo"
+
+    list_of_input = data_input_default(group_route)
+    epochs_count, model_type, batch_count, pat_count = data_train_input()
 
     for i in range(len(list_of_input)):
-        base_route_simplex += "\\" + list_of_input[i]
+        base_route += "\\" + list_of_input[i]
 
         if i == len(list_of_input)-1:
             code = list_of_input[i]
     
-
-    automate_route = base_route_simplex + "\\X_Automasi"
+    automate_route = base_route + "\\X_Automate"
     yaml_route = automate_route + "\\" + code + ".yaml"
+    project_source = automate_route + "\\Models"
+    epochs_source = epochs_count
+    cfg_source = program_route + "\\models\\" + model_type + ".yaml"
+    batch_size_source = batch_count
+    patience_size_source = pat_count
+    train_file = program_route + "\\yolov5\\train.py"
 
+    argument = ["--data", yaml_route,
+                "--project", project_source,
+                "--epochs", epochs_source,
+                "--weights", "",
+                "--cfg", cfg_source,
+                "--batch_size", batch_size_source,
+                "--patience", patience_size_source]
 
-    
-data_source = f'{BASIS_FOLDER}2_Stock_Foto/{out_or_in}/{kendaraan}/{box}/{kode_box}/X_Automasi/{kode_box}.yaml'
-
-data_source = f'{BASIS_FOLDER}5_STUDIO_MAKER/{kendaraan}/{box}/{kode_box}/{kode_box}.yaml'
-
-"""F:\\repo_generator\\V1\\data_generator\\Project\\RB4\\"""
+    run_python_file(train_file, argument)
