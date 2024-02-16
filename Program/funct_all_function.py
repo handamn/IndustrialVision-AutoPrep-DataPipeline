@@ -168,9 +168,14 @@ def data_train_input():
 
     return epochs_count, model_type, batch_count, pat_count
 
-def train(folder_route, program_route):
-    group_route = folder_route + "group.txt"
-    base_route = folder_route + "1_Stock_Photo"
+def train(folder_route, program_route, decision):
+    if decision == "Begin":
+        group_route = folder_route + "group.txt"
+        base_route = folder_route + "1_Stock_Photo"
+    
+    else :
+        group_route = folder_route + "group_crop.txt"
+        base_route = folder_route + "2_Train_Artefact"
 
     list_of_input = data_input_default(group_route)
     epochs_count, model_type, batch_count, pat_count = data_train_input()
@@ -180,8 +185,13 @@ def train(folder_route, program_route):
 
         if i == len(list_of_input)-1:
             code = list_of_input[i]
+
+    if decision == "Begin":
+        automate_route = base_route + "\\X_Automate"
     
-    automate_route = base_route + "\\X_Automate"
+    else :
+        automate_route = base_route
+    
     yaml_route = automate_route + "\\" + code + ".yaml"
     project_source = automate_route + "\\Models"
     epochs_source = epochs_count
