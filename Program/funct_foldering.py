@@ -134,6 +134,7 @@ def master_program(base_folder):
             os.mkdir(st_path + item + "\\" + item2)
             os.mkdir(st_path + item + "\\" + item2 + "\\images")
             os.mkdir(st_path + item + "\\" + item2 + "\\labels")
+            os.mkdir(st_path + item + "\\" + item2 + "\\Models")
             os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate")
             os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate\\images")
             os.mkdir(st_path + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
