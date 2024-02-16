@@ -35,8 +35,8 @@ def flatten_list(nested_list):
     return flattened_list
 
 
-def write_text(link_path, list_name):
-    file_name = link_path + "\group.txt"
+def write_text(link_path, list_name, name_file):
+    file_name = link_path + "\\" + name_file + ".txt"
     with open(file_name, 'w+') as f:
         for items in list_name:
             f.write('%s\n' %items)
@@ -98,11 +98,14 @@ def master_program(base_folder):
 
     Last_Name_Group = str(input("Enter Grouping Name for depth " + str(Folder_Depth) + " : "))
     key_list.append(Last_Name_Group)
-    write_text(final_path, key_list)
+    write_text(final_path, key_list, "group")
 
     potong = str(input("Group Tier to Combine : "))
     ind = int(key_list.index(potong))
     new_value_list = value_list[ind+1:]
+
+    new_key_list = key_list[ind+1:]
+    write_text(final_path, new_key_list, "group_crop")
 
     Length_Folder_Depth = length_measure(value_list)
     Length_Folder_Depth_2 = length_measure(new_value_list)    
