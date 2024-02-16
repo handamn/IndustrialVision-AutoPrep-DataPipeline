@@ -44,4 +44,10 @@ elif decision == 2:
         funct.labeling(base_folder_menu_1)
     
     elif pick_menu == "4":
-        funct.train(base_folder_menu_1, program_folder)
+        funct.train(base_folder_menu_1, program_folder, "Begin")
+    
+    elif pick_menu == "5":
+        funct.Auto_Anotate(base_folder_menu_1, program_folder)
+    
+    elif pick_menu == "7":
+        funct.train(base_folder_menu_1, program_folder, "Final")
