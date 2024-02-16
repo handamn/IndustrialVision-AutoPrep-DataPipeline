@@ -1,8 +1,7 @@
 import os
-import shutil
 import sys
-import funct_foldering as foldering
-import funct_all_function as functioning
+import Start5_2___all_function___V4 as funct
+import Start4_5___master2___V18 as foldering
 
 ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 project_folder = ground_folder + "\\Project"
