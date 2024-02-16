@@ -1,5 +1,6 @@
 import os
 import sys
+import csv
 
 ##############################
 def Create_Dir_Base(base, branch, value_list, current_combination=[]):
@@ -59,6 +60,13 @@ def length_measure(list_value):
     for i in range(len(list_value)):
         length_count *= len(list_value[i])
     return length_count
+
+
+def list_to_csv(data_list, file_name):
+    with open(file_name, 'w', newline='') as csv_file:
+        writer = csv.writer(csv_file)
+        for item in data_list:
+            writer.writerow([item])
 
 ##############################
 
@@ -129,15 +137,38 @@ def master_program(base_folder):
         B_sub_folder[key_sub_folder[i]] = sub_folder_2a
 
 
+    store_csv = {}
+
     for item in key_sub_folder:
         for item2 in A_sub_folder[item]:
             os.mkdir(st_path + item + "\\" + item2)
             os.mkdir(st_path + item + "\\" + item2 + "\\images")
             os.mkdir(st_path + item + "\\" + item2 + "\\labels")
-            os.mkdir(st_path + item + "\\" + item2 + "\\Models")
+            os.mkdir(st_path + item + "\\" + item2 + "\\models")
             os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate")
             os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate\\images")
             os.mkdir(st_path + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
+
+            words = item.split('\\')
+            code_type = words[:1]
+            code2 = ""
+            first_group = code2.join(code_type)
+
+            index_type = words[1:]
+            code0 = "\\"
+            index_store = code0.join(index_type)
+
+
+            if (directory_dict[key_list[0]][0]) == first_group :
+                store_csv[index_store] = A_sub_folder[item]
+                list_to_csv(A_sub_folder[item], (st_path + item + "\\" + "index_class.csv"))
+            
+
+            else :
+                list_to_csv(store_csv[index_store], (st_path + item + "\\" + "index_class.csv"))
+
+
+
 
     count_Length_Folder_Depth = 0
     for item in key_sub_folder:
