@@ -3,6 +3,7 @@ import sys
 import funct_all_function as funct
 import funct_foldering as foldering
 
+#base of folder
 ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 project_folder = ground_folder + "\\Project"
 program_folder = ground_folder + "\\Program"
