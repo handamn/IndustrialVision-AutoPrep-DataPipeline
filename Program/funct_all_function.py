@@ -11,9 +11,9 @@ import pandas as pd
 from tqdm import tqdm
 import csv
 
-from pathlib import path
-from models.experimental import attempt_load
-from utils.general import non_max_suppression
+#from pathlib import path
+#from models.experimental import attempt_load
+#from utils.general import non_max_suppression
 
 def print_menu():
     print("\nProgram Generator\n")
@@ -185,15 +185,6 @@ def labeling(route_path):
     stdout, stderr = process.communicate()
 
 
-
-def data_train_input():
-    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
-    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
-    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
-    pat_count     = input("Enter Patience            (ex : 100)             : ")
-
-    return epochs_count, model_type, batch_count, pat_count
-
 def train(folder_route, program_route, decision):
     if decision == "Begin":
         group_route = folder_route + "group.txt"
@@ -217,7 +208,6 @@ def train(folder_route, program_route, decision):
     
     else :
         automate_route = base_route
-
     
     yaml_route = automate_route + "\\" + code + ".yaml"
     project_source = automate_route + "\\Models"
