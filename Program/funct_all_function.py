@@ -48,6 +48,39 @@ def simple_route(main_route, decision):
     return base_route, automate_route
 
 
+def simple_route2(main_route):
+    og_group_route = main_route + "group.txt"
+    crop_group_route = main_route + "group_crop.txt"
+
+    og_base_route = main_route + "1_Stock_Photo"
+
+    og_list_of_input = data_input_default(og_group_route, "key")
+
+    input_result_route = ""
+
+    for i in range(len(og_list_of_input)):
+        og_base_route += "\\" + og_list_of_input[i]
+        x += og_list_of_input[i] + "\\"
+
+        if i == len(og_list_of_input)-1:
+            code = og_list_of_input[i]
+
+    og_automate_route = og_base_route + "\\X_Automate"
+
+    
+    
+    print(og_base_route)
+    print(og_automate_route)
+    print(code)
+    print(input_result_route)
+    return og_base_route, og_automate_route, code, x
+
+simple_route2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
+
+#simple_route2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\","complete")
+
+
+
 def csv_file_reader(nama_file):
     data = []
     with open(nama_file, 'r') as file_csv:
@@ -62,9 +95,10 @@ def split_data_main():
 def split_data(route_path, decision):
     base_route, automate_route = simple_route(route_path, decision)
 
-    #print(base_route)
-    #print(automate_route)
-    #print("")
+    print("")
+    print(base_route)
+    print(automate_route)
+    print("")
 
     parse_base_route = base_route.split("\\")
     parse_base_route_class = parse_base_route[:-1]
@@ -87,14 +121,20 @@ def split_data(route_path, decision):
         print(index_class_route + "\\" + code)
 
 
+def coba(route_path, decision):
+    base_route, automate_route = simple_route(route_path, decision)
+
+    print(base_route)
+    if base_route.startswith(route_path+"1_Stock_Photo\\"):
+        value_input = base_route[len(route_path+"1_Stock_Photo\\"):]
+
+    print(value_input)
+    print("============")
+    print("")
+
+#coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "0")
+#coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "complete")
 
 
 
-#split_data("F:\\repo_generator\\V1\\data_generator\\Project\\RB13\\", "complete")
-#print("")
-split_data("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "complete")
-
-"""
-F:\repo_generator\V1\data_generator\Project\RB8\1_Stock_Photo\Laboratory\LHD\Box1\X_1_A
-F:\repo_generator\V1\data_generator\Project\RB8\1_Stock_Photo\Laboratory\LHD\Box1\X_1_A\X_Automate
-"""
+#split_data("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "complete")
