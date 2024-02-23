@@ -62,9 +62,9 @@ def split_data_main():
 def split_data(route_path, decision):
     base_route, automate_route = simple_route(route_path, decision)
 
-    print(base_route)
-    print(automate_route)
-    print("")
+    #print(base_route)
+    #print(automate_route)
+    #print("")
 
     parse_base_route = base_route.split("\\")
     parse_base_route_class = parse_base_route[:-1]
@@ -74,12 +74,19 @@ def split_data(route_path, decision):
     data_csv = csv_file_reader(class_file)
     output = route_path + "2_Train_Artefact"
 
-    print(class_file)
-    print(output)
+    #print(class_file)
+    #print(output)
+    #print("")
 
-    """if main_code in data_csv:
-        for code in data_csv:
-            if code != """
+    get_code = parse_base_route[-1]
+    #print(get_code)
+    #print(data_csv)
+    
+    for code in data_csv:
+        print(code)
+        print(index_class_route + "\\" + code)
+
+
 
 
 
