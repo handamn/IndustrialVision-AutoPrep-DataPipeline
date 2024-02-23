@@ -65,15 +65,15 @@ def data_train_input():
     return epochs_count, model_type, batch_count, pat_count
 
 
-def simple_route(main_route, decision):
-    if decision == "complete":
-        group_route = main_route + "group.txt"
-    else :
-        group_route = main_route + "group_crop.txt"
+########################################
+########################################
 
+
+def simple_route(main_route):
+    group_route = main_route + "group.txt"
     base_route = main_route + "1_Stock_Photo"
 
-    list_of_input = data_input_default(group_route, "key")
+    list_of_input = data_input_default(group_route)
 
     for i in range(len(list_of_input)):
         base_route += "\\" + list_of_input[i]
@@ -84,6 +84,23 @@ def simple_route(main_route, decision):
     automate_route = base_route + "\\X_Automate"
 
     return base_route, automate_route
+
+
+def split_data(route_path):
+    base_route, automate_route = simple_route(route_path)
+
+    print(base_route)
+    print(automate_route)
+
+split_data("F:\\repo_generator\\V1\\data_generator\\Project\\RB8\\")
+
+"""
+F:\repo_generator\V1\data_generator\Project\RB8\1_Stock_Photo\Laboratory\LHD\Box1\X_1_A
+F:\repo_generator\V1\data_generator\Project\RB8\1_Stock_Photo\Laboratory\LHD\Box1\X_1_A\X_Automate
+"""
+
+########################################
+########################################
 
 
 def read_csv(file_name):
