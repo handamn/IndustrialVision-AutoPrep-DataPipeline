@@ -48,34 +48,59 @@ def simple_route(main_route, decision):
     return base_route, automate_route
 
 
+def data_input_default2(route, decision):
+    base = route + "group.txt"
+    base2 = route + "group_crop.txt"
+
+    list_var = baca_file(base, decision)
+    list_var_crop = baca_file(base2, decision)
+
+    dict_value_input = {}
+    dict_value_input_crop = {}
+
+    for i in range(len(list_var)):
+        value = input("Masukkan Value untuk " + list_var[i] + " : ")
+        dict_value_input[i] = value
+
+        for j in range(len(list_var_crop)):
+            if list_var[i] == list_var_crop[j]:
+                dict_value_input_crop[j] = value
+
+    return dict_value_input, dict_value_input_crop
+
+
+#data_input_default2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "key")
+
+
 def simple_route2(main_route):
-    og_group_route = main_route + "group.txt"
-    crop_group_route = main_route + "group_crop.txt"
-
     og_base_route = main_route + "1_Stock_Photo"
-
-    og_list_of_input = data_input_default(og_group_route, "key")
+    og_list_of_input, crop_list_of_input = data_input_default2(main_route, "key")
 
     input_result_route = ""
+    mod_input_result_route = ""
 
     for i in range(len(og_list_of_input)):
         og_base_route += "\\" + og_list_of_input[i]
-        x += og_list_of_input[i] + "\\"
+        input_result_route += og_list_of_input[i] + "\\"
 
         if i == len(og_list_of_input)-1:
             code = og_list_of_input[i]
 
     og_automate_route = og_base_route + "\\X_Automate"
 
-    
-    
-    print(og_base_route)
-    print(og_automate_route)
-    print(code)
-    print(input_result_route)
-    return og_base_route, og_automate_route, code, x
+    for i in range(len(crop_list_of_input)):
+        if i < (len(crop_list_of_input)-1):
+            mod_input_result_route += crop_list_of_input[i] + "\\"
 
-simple_route2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
+    #print(og_base_route)
+    #print(og_automate_route)
+    #print(code)
+    #print(input_result_route)
+    #print(mod_input_result_route)
+
+    return og_base_route, og_automate_route, code, input_result_route, mod_input_result_route
+
+#simple_route2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
 
 #simple_route2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\","complete")
 
@@ -131,6 +156,23 @@ def coba(route_path, decision):
     print(value_input)
     print("============")
     print("")
+
+def coba2(route_path):
+    base_route, automate_route, code, input_result_route, mod_input_result_route = simple_route2(route_path)
+
+    parse_base_route = base_route.split("\\")
+    parse_base_route_class = parse_base_route[:-1]
+    index_class_route = "\\".join(parse_base_route_class)
+
+    class_file = index_class_route + "\\index_class.csv"
+    data_csv = csv_file_reader(class_file)
+    output = route_path + "2_Train_Artefact"
+
+    for code in data_csv:
+        print(code)
+
+
+coba2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
 
 #coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "0")
 #coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "complete")
