@@ -69,9 +69,6 @@ def data_input_default2(route, decision):
     return dict_value_input, dict_value_input_crop
 
 
-#data_input_default2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "key")
-
-
 def simple_route2(main_route):
     og_base_route = main_route + "1_Stock_Photo"
     og_list_of_input, crop_list_of_input = data_input_default2(main_route, "key")
@@ -92,18 +89,7 @@ def simple_route2(main_route):
         if i < (len(crop_list_of_input)-1):
             mod_input_result_route += crop_list_of_input[i] + "\\"
 
-    #print(og_base_route)
-    #print(og_automate_route)
-    #print(code)
-    #print(input_result_route)
-    #print(mod_input_result_route)
-
     return og_base_route, og_automate_route, code, input_result_route, mod_input_result_route
-
-#simple_route2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
-
-#simple_route2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\","complete")
-
 
 
 def csv_file_reader(nama_file):
@@ -133,13 +119,7 @@ def split_data(route_path, decision):
     data_csv = csv_file_reader(class_file)
     output = route_path + "2_Train_Artefact"
 
-    #print(class_file)
-    #print(output)
-    #print("")
-
     get_code = parse_base_route[-1]
-    #print(get_code)
-    #print(data_csv)
     
     for code in data_csv:
         print(code)
@@ -173,10 +153,3 @@ def coba2(route_path):
 
 
 coba2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
-
-#coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "0")
-#coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "complete")
-
-
-
-#split_data("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\", "complete")
