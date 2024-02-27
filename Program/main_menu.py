@@ -8,8 +8,6 @@ ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 project_folder = ground_folder + "\\Project"
 program_folder = ground_folder + "\\Program"
 
-print(ground_folder)
-
 print("1. New Project")
 print("2. Load Project")
 
@@ -36,19 +34,19 @@ elif decision == 2:
     pick_menu = funct.print_menu()
 
     if pick_menu == "1":
-        funct.capture(base_folder_menu_1)
+        funct.capture(base_folder_menu_1, "complete")
     
     elif pick_menu == "2":
-        funct.pick_rand(base_folder_menu_1)
+        funct.pick_rand(base_folder_menu_1, "complete")
     
     elif pick_menu == "3":
-        funct.labeling(base_folder_menu_1)
+        funct.labeling(base_folder_menu_1, "complete")
     
     elif pick_menu == "4":
-        funct.train(base_folder_menu_1, program_folder, "Begin")
+        funct.train(base_folder_menu_1, program_folder, "Begin", "complete")
     
     elif pick_menu == "5":
-        funct.Auto_Anotate(base_folder_menu_1, program_folder)
+        funct.Auto_Anotate(base_folder_menu_1, program_folder, "complete")
     
     elif pick_menu == "7":
-        funct.train(base_folder_menu_1, program_folder, "Final")
+        funct.train(base_folder_menu_1, program_folder, "Final", "complete")
