@@ -8,6 +8,8 @@ ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 project_folder = ground_folder + "\\Project"
 program_folder = ground_folder + "\\Program"
 
+print(ground_folder)
+
 print("1. New Project")
 print("2. Load Project")
 
