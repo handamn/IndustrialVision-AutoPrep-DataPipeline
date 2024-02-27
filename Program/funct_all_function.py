@@ -177,3 +177,69 @@ def coba2(route_path):
 
 
 coba2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
+
+
+#######################################
+#######################################
+
+def baca_file(route):
+    data = {}
+    data2 = {}
+    with open(route, 'r') as file:
+        for line in file:
+            stripped_line = line.strip()
+            key2, values2 = line.strip().split(": ")
+            data2[key2] = values2.split(" ")
+            print("1")
+            if stripped_line:
+                print("0")
+                key, values = line.strip().split(': ')
+                data[key] = values.split(' ')
+            
+
+    key_list = list(data.keys())
+    value_list = list(data.values())
+
+    key_list2 = list(data2.keys())
+    value_list2 = list(data2.values())
+
+    print(key_list)
+    print(key_list2)
+    #print(value_list)
+    
+    
+def baca_file_read(nama_file):
+    with open(nama_file, 'r') as file:
+        isi_file = file.read()
+    print("### read ###")
+    print(isi_file)
+    print(type(isi_file))
+    print("###############")
+    print("")
+
+def baca_file_readline(nama_file):
+    with open(nama_file, 'r') as file:
+        isi_file = file.readline()
+    print("### readline ###")
+    print(isi_file)
+    print(type(isi_file))
+    print("###############")
+    print("")
+
+def baca_file_readlines(nama_file):
+    with open(nama_file, 'r') as file:
+        isi_file = file.readlines()
+    print("### readlines ###")
+    print(isi_file)
+    print(type(isi_file))
+    print("###############")
+    print("")
+
+
+# Ganti 'nama_file.txt' dengan nama file teks yang ingin Anda baca
+nama_file = 'F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\group_crop3.txt'
+
+baca_file(nama_file)
+"""baca_file_read(nama_file)
+baca_file_readline(nama_file)
+baca_file_readlines(nama_file)"""
