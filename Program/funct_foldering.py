@@ -104,6 +104,7 @@ def master_program(base_folder):
 
     potong = str(input("Group Tier to Combine : "))
     ind = int(key_list.index(potong))
+    poto = ind+1
     new_value_list = value_list[ind+1:]
 
     new_key_list = key_list[ind+1:]
@@ -112,6 +113,13 @@ def master_program(base_folder):
     new_directory_dict = dict(conversion)
 
     write_text(final_path, new_directory_dict, "group_crop")
+
+
+    keys = list(directory_dict.keys())
+    new_dict = {keys[i]:directory_dict[keys[i]] for i in range(ind+1)}
+
+    write_text(final_path, new_dict, "group_crop_2")
+
 
     Length_Folder_Depth = length_measure(value_list)
     Length_Folder_Depth_2 = length_measure(new_value_list)    
