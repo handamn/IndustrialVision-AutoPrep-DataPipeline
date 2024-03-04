@@ -39,7 +39,10 @@ def write_text(link_path, list_data, name_file):
     file_name = link_path + "\\" + name_file + ".txt"
     with open(file_name, 'w') as file:
         for key, value in list_data.items():
-            file.write(f"{key}: {' '.join(value)}\n")
+            if key is None or value is None:
+                file.write("\n")
+            else:
+                file.write(f"{key}: {' '.join(value)}\n")
 
 
 def create_folder(source_path, list_value, subject_folder):
@@ -106,19 +109,24 @@ def master_program(base_folder):
     ind = int(key_list.index(potong))
     poto = ind+1
     new_value_list = value_list[ind+1:]
-
     new_key_list = key_list[ind+1:]
-    conversion = list(directory_dict.items())
-    conversion.pop(ind)
-    new_directory_dict = dict(conversion)
 
-    write_text(final_path, new_directory_dict, "group_crop")
+    before_directory_dict_conversion = list(directory_dict.keys())
+    before_directory_dict = {before_directory_dict_conversion[i]:directory_dict[before_directory_dict_conversion[i]] for i in range(ind+1)}
 
+    before_directory_dict[None] = None
+    #write_text(final_path, before_directory_dict, "group_crop_2")
 
-    keys = list(directory_dict.keys())
-    new_dict = {keys[i]:directory_dict[keys[i]] for i in range(ind+1)}
+    after_directory_dict_conversion = list(directory_dict.items())
+    after_directory_dict_conversion.pop(ind)
+    after_directory_dict = dict(after_directory_dict_conversion)
+    #write_text(final_path, after_directory_dict, "group_crop")
 
-    write_text(final_path, new_dict, "group_crop_2")
+    write_directory_dict = before_directory_dict
+    write_directory_dict.update(after_directory_dict)
+
+    write_text(final_path, write_directory_dict, "group_new")
+
 
 
     Length_Folder_Depth = length_measure(value_list)
