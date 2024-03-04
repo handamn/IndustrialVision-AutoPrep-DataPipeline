@@ -102,8 +102,6 @@ def master_program(base_folder):
     key_list.append(Last_Name_Group)
 
     directory_dict[Last_Name_Group] = "BLANK"
-    
-    write_text(final_path, directory_dict, "group")
 
     potong = str(input("Group Tier to Combine : "))
     ind = int(key_list.index(potong))
@@ -115,18 +113,15 @@ def master_program(base_folder):
     before_directory_dict = {before_directory_dict_conversion[i]:directory_dict[before_directory_dict_conversion[i]] for i in range(ind+1)}
 
     before_directory_dict[None] = None
-    #write_text(final_path, before_directory_dict, "group_crop_2")
 
     after_directory_dict_conversion = list(directory_dict.items())
     after_directory_dict_conversion.pop(ind)
     after_directory_dict = dict(after_directory_dict_conversion)
-    #write_text(final_path, after_directory_dict, "group_crop")
 
     write_directory_dict = before_directory_dict
     write_directory_dict.update(after_directory_dict)
 
-    write_text(final_path, write_directory_dict, "group_new")
-
+    write_text(final_path, write_directory_dict, "group")
 
 
     Length_Folder_Depth = length_measure(value_list)
