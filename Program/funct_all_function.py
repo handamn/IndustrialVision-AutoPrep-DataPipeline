@@ -193,7 +193,7 @@ def csv_file_reader(nama_file):
     return data
 
 
-def baca_file_3(route):
+def baca_file(route):
     all_data = {}
     before_data = {}
     after_data = {}
@@ -226,10 +226,10 @@ def baca_file_3(route):
     return key_list, value_list, before_key, before_value, after_key, after_value
     
 
-def data_input_default_3(route):
+def data_input_default(route):
     base = route + "group.txt"
 
-    key_list, value_list, before_key, before_value, after_key, after_value = baca_file_3(base)
+    key_list, value_list, before_key, before_value, after_key, after_value = baca_file(base)
     
     dict_value_input = {}
     dict_value_input_crop = {}
@@ -245,9 +245,9 @@ def data_input_default_3(route):
     return dict_value_input, dict_value_input_crop
 
 
-def simple_route_3(main_route):
+def simple_route(main_route):
     og_base_route = main_route + "1_Stock_Photo"
-    og_list_of_input, crop_list_of_input = data_input_default_3(main_route)
+    og_list_of_input, crop_list_of_input = data_input_default(main_route)
 
     input_result_route = ""
     mod_input_result_route = ""
@@ -268,7 +268,7 @@ def simple_route_3(main_route):
     return og_base_route, og_automate_route, code, input_result_route, mod_input_result_route
 
 
-def tes(value, current_combination = []):
+def store_route_path(value, current_combination = []):
     if not value:
         dor = "\\".join(current_combination)
         return dor
@@ -276,7 +276,7 @@ def tes(value, current_combination = []):
     else :
         result = []
         for item in value[0]:
-            result.append(tes(value[1:], current_combination + [item]))
+            result.append(store_route_path(value[1:], current_combination + [item]))
         
         return result
 
@@ -291,12 +291,12 @@ def flatten_list(nested_list):
     return flattened_list
 
 
-def coba_3(route_path):
+def coba(route_path):
     base = route_path + "group.txt"
 
-    base_route, automate_route, code, input_result_route, mod_input_result_route = simple_route_3(route_path)
+    base_route, automate_route, code, input_result_route, mod_input_result_route = simple_route(route_path)
 
-    key_list, value_list, before_key, before_value, after_key, after_value = baca_file_3(base)
+    key_list, value_list, before_key, before_value, after_key, after_value = baca_file(base)
 
     parse_base_route = base_route.split("\\")
     parse_base_route_class = parse_base_route[:-1]
@@ -304,36 +304,28 @@ def coba_3(route_path):
 
     class_file = index_class_route + "\\index_class.csv"
     data_csv = csv_file_reader(class_file)
-    output = route_path + "2_Train_Artefact"
+    
+    Stock_Photo = route_path + "1_Stock_Photo\\"
+    Train_Artefact = route_path + "2_Train_Artefact\\"
 
-    """print("")
-    print(route_path)
-    print("")
-    print(base_route)
-    print("")
-    print(automate_route)
-    print("")
-    print(code)
-    print("")
-    print(input_result_route)
-    print("")
-    print(mod_input_result_route)
-    print("")
-    print("==========================")
-    print(tes(before_value))"""
-
-    """for code in data_csv:
-        for second_main in tes(before_value):
-            print(second_main + )"""
-
-    for second_main in flatten_list(tes(before_value)):
+    for second_main in flatten_list(store_route_path(before_value)):
         for codex in data_csv:
             if codex == code :
-                print("NG")
+                print("======================")
+                print("OK")
+                print(Stock_Photo + second_main + "\\" + mod_input_result_route  + codex)
+                print(Train_Artefact + mod_input_result_route + code)
+                print("======================")
+                print("")
             else :
-                print(second_main + "\\" + mod_input_result_route  + codex)
+                print("======================")
+                print("NG")
+                print(Stock_Photo + second_main + "\\" + mod_input_result_route  + codex)
+                print(Train_Artefact + mod_input_result_route + code)
+                print("======================")
+                print("")
 
-coba_3("F:\\repo_generator\\V1\\data_generator\\Project\\RB2A\\")
+coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB2A\\")
 
 
 #######################################
