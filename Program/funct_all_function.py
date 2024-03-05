@@ -182,7 +182,18 @@ coba2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
 #######################################
 #######################################
 
-def baca_file(route):
+import csv
+
+def csv_file_reader(nama_file):
+    data = []
+    with open(nama_file, 'r') as file_csv:
+        reader = csv.reader(file_csv)
+        for baris in reader:
+            data.append(baris[0])  # Ambil elemen pertama dari setiap baris
+    return data
+
+
+def baca_file_3(route):
     all_data = {}
     before_data = {}
     after_data = {}
@@ -192,9 +203,9 @@ def baca_file(route):
     with open(route, 'r') as file:
         for line in file:
             stripped_line = line.strip()
-            if not stripped_line:  # Cek apakah baris kosong
+            if not stripped_line:
                 empty_found = True
-                continue  # Loncat ke baris berikutnya
+                continue
 
             key, values = stripped_line.split(': ')
             value_list = values.split(' ')
@@ -215,11 +226,52 @@ def baca_file(route):
     return key_list, value_list, before_key, before_value, after_key, after_value
     
 
+def data_input_default_3(route):
+    base = route + "group.txt"
+
+    key_list, value_list, before_key, before_value, after_key, after_value = baca_file_3(base)
+    
+    dict_value_input = {}
+    dict_value_input_crop = {}
+
+    for i in range(len(key_list)):
+        value = input("Masukkan Value untuk " + key_list[i] + " : ")
+        dict_value_input[i] = value
+
+        for j in range(len(after_key)):
+            if key_list[i] == after_key[j]:
+                dict_value_input_crop[j] = value
+
+    return dict_value_input, dict_value_input_crop
+
+
+def simple_route_3(main_route):
+    og_base_route = main_route + "1_Stock_Photo"
+    og_list_of_input, crop_list_of_input = data_input_default_3(main_route)
+
+    input_result_route = ""
+    mod_input_result_route = ""
+
+    for i in range(len(og_list_of_input)):
+        og_base_route += "\\" + og_list_of_input[i]
+        input_result_route += og_list_of_input[i] + "\\"
+
+        if i == len(og_list_of_input)-1:
+            code = og_list_of_input[i]
+
+    og_automate_route = og_base_route + "\\X_Automate"
+
+    for i in range(len(crop_list_of_input)):
+        if i < (len(crop_list_of_input)-1):
+            mod_input_result_route += crop_list_of_input[i] + "\\"
+
+    return og_base_route, og_automate_route, code, input_result_route, mod_input_result_route
+
 
 def tes(value, current_combination = []):
-    dor = ""
     if not value:
-        return "\\".join(current_combination)
+        dor = "\\".join(current_combination)
+        return dor
 
     else :
         result = []
@@ -239,17 +291,49 @@ def flatten_list(nested_list):
     return flattened_list
 
 
+def coba_3(route_path):
+    base = route_path + "group.txt"
 
-nama_file = 'F:\\repo_generator\\V1\\data_generator\\Project\\RB2A\\group.txt'
-key_list, value_list, before_key, before_value, after_key, after_value = baca_file(nama_file)
+    base_route, automate_route, code, input_result_route, mod_input_result_route = simple_route_3(route_path)
 
+    key_list, value_list, before_key, before_value, after_key, after_value = baca_file_3(base)
 
-#print(tes(before_value))
-#adam = tes(before_value)
+    parse_base_route = base_route.split("\\")
+    parse_base_route_class = parse_base_route[:-1]
+    index_class_route = "\\".join(parse_base_route_class)
 
-#print(adam)
+    class_file = index_class_route + "\\index_class.csv"
+    data_csv = csv_file_reader(class_file)
+    output = route_path + "2_Train_Artefact"
 
-print(flatten_list(tes(before_value)))
+    """print("")
+    print(route_path)
+    print("")
+    print(base_route)
+    print("")
+    print(automate_route)
+    print("")
+    print(code)
+    print("")
+    print(input_result_route)
+    print("")
+    print(mod_input_result_route)
+    print("")
+    print("==========================")
+    print(tes(before_value))"""
+
+    """for code in data_csv:
+        for second_main in tes(before_value):
+            print(second_main + )"""
+
+    for second_main in flatten_list(tes(before_value)):
+        for codex in data_csv:
+            if codex == code :
+                print("NG")
+            else :
+                print(second_main + "\\" + mod_input_result_route  + codex)
+
+coba_3("F:\\repo_generator\\V1\\data_generator\\Project\\RB2A\\")
 
 
 #######################################
