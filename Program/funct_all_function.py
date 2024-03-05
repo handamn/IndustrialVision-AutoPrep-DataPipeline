@@ -215,37 +215,6 @@ def baca_file(route):
     return key_list, value_list, before_key, before_value, after_key, after_value
     
 
-def baca_file_read(nama_file):
-    with open(nama_file, 'r') as file:
-        isi_file = file.read()
-    print("### read ###")
-    print(isi_file)
-    print(type(isi_file))
-    print("###############")
-    print("")
-
-def baca_file_readline(nama_file):
-    with open(nama_file, 'r') as file:
-        isi_file = file.readline()
-    print("### readline ###")
-    print(isi_file)
-    print(type(isi_file))
-    print("###############")
-    print("")
-
-def baca_file_readlines(nama_file):
-    with open(nama_file, 'r') as file:
-        isi_file = file.readlines()
-    print("### readlines ###")
-    print(isi_file)
-    print(type(isi_file))
-    print("###############")
-    print("")
-
-
-# Ganti 'nama_file.txt' dengan nama file teks yang ingin Anda baca
-nama_file = 'F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\group_crop3.txt'
-
 
 def tes(value, current_combination = []):
     if not value:
@@ -258,6 +227,22 @@ def tes(value, current_combination = []):
 
 
 
+
+nama_file = 'F:\\repo_generator\\V1\\data_generator\\Project\\RB2A\\group.txt'
 key_list, value_list, before_key, before_value, after_key, after_value = baca_file(nama_file)
 
+#tes(key_list)
+print("")
+#tes(value_list)
+print("")
+#tes(before_key)
+print("")
 tes(before_value)
+print("")
+#tes(after_key)
+print("")
+#tes(after_value)
+
+
+#######################################
+#######################################
