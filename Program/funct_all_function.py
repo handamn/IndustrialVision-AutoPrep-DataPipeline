@@ -296,6 +296,11 @@ def coba(route_path):
 
     base_route, automate_route, code, input_result_route, mod_input_result_route = simple_route(route_path)
 
+    OK_Count = int(input("Enter OK Value              (ex : 200)     : "))
+    NG_Count = int(input("Enter NG Value each folder  (ex : 35)      : "))
+    percentage = input("Enter OK Percentage         (ex: 80)       : ")
+    percentage = int(percentage) / 100
+
     key_list, value_list, before_key, before_value, after_key, after_value = baca_file(base)
 
     parse_base_route = base_route.split("\\")
