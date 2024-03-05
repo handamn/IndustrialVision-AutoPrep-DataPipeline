@@ -217,31 +217,39 @@ def baca_file(route):
 
 
 def tes(value, current_combination = []):
+    dor = ""
     if not value:
-        dor = "\\".join(current_combination)
-        print(dor)
+        return "\\".join(current_combination)
 
     else :
+        result = []
         for item in value[0]:
-            tes(value[1:], current_combination + [item])
+            result.append(tes(value[1:], current_combination + [item]))
+        
+        return result
 
+
+def flatten_list(nested_list):
+    flattened_list = []
+    for item in nested_list:
+        if isinstance(item, list):
+            flattened_list.extend(flatten_list(item))
+        else:
+            flattened_list.append(item)
+    return flattened_list
 
 
 
 nama_file = 'F:\\repo_generator\\V1\\data_generator\\Project\\RB2A\\group.txt'
 key_list, value_list, before_key, before_value, after_key, after_value = baca_file(nama_file)
 
-#tes(key_list)
-print("")
-#tes(value_list)
-print("")
-#tes(before_key)
-print("")
-tes(before_value)
-print("")
-#tes(after_key)
-print("")
-#tes(after_value)
+
+#print(tes(before_value))
+#adam = tes(before_value)
+
+#print(adam)
+
+print(flatten_list(tes(before_value)))
 
 
 #######################################
