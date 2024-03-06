@@ -3,17 +3,6 @@ import sys
 import Start5_2___all_function___V9 as funct
 import Start4_5___master2___V25 as foldering
 
-def repeat():
-    get_input = str(input("Finish Process ? (yes/no) : "))
-    
-    if (get_input == "yes"):
-        condition = True
-        return condition
-    
-    else:
-        condition = False
-        return condition
-
 condition = False
 
 ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
@@ -50,24 +39,24 @@ elif decision == 2:
 
         if pick_menu == "1":
             funct.capture(base_folder_menu_1, "complete")
-            condition = repeat()
+            condition = funct.repeat()
         
         elif pick_menu == "2":
             funct.pick_rand(base_folder_menu_1, "complete")
-            condition = repeat()
+            condition = funct.repeat()
         
         elif pick_menu == "3":
             funct.labeling(base_folder_menu_1, "complete")
-            condition = repeat()
+            condition = funct.repeat()
         
         elif pick_menu == "4":
             funct.train(base_folder_menu_1, program_folder, "Begin", "complete")
-            condition = repeat()
+            condition = funct.repeat()
         
         elif pick_menu == "5":
             funct.Auto_Anotate(base_folder_menu_1, program_folder, "complete")
-            condition = repeat()
+            condition = funct.repeat()
         
         elif pick_menu == "7":
             funct.train(base_folder_menu_1, program_folder, "Final", "complete")
-            condition = repeat()
+            condition = funct.repeat()
