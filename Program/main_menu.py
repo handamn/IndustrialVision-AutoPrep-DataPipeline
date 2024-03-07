@@ -5,6 +5,7 @@ import Start4_5___master2___V25 as foldering
 
 condition = False
 
+# Base Folder
 ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 project_folder = ground_folder + "\\Project"
 program_folder = ground_folder + "\\Program"
@@ -49,7 +50,7 @@ elif decision == 2:
             condition = funct.repeat()
         
         elif pick_menu == "4":
-            funct.train(base_folder_menu_1, program_folder, "Begin", "complete")
+            funct.train(base_folder_menu_1, program_folder, "Begin")
             condition = funct.repeat()
         
         elif pick_menu == "5":
@@ -57,5 +58,5 @@ elif decision == 2:
             condition = funct.repeat()
         
         elif pick_menu == "7":
-            funct.train(base_folder_menu_1, program_folder, "Final", "complete")
+            funct.train(base_folder_menu_1, program_folder, "Final")
             condition = funct.repeat()
