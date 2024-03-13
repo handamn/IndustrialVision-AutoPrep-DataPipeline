@@ -11,9 +11,6 @@ import pandas as pd
 from tqdm import tqdm
 import csv
 
-#from pathlib import path
-#from models.experimental import attempt_load
-#from utils.general import non_max_suppression
 
 def print_menu():
     print("\nProgram Generator\n")
@@ -292,7 +289,7 @@ def Auto_Anotate(route_path, program_route, decision):
         label_directory = os.path.join(folder_train_labels, label_name)
 
         image_directory = os.path.join(folder_train_images, name)
-        results = model(image_directory)
+        results = model(image_directory, size = 640)
         xyxy_results = results.pandas().xyxy[0]
 
         if not xyxy_results.empty:
