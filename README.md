@@ -8,7 +8,7 @@ This project simplifies the process of preparing and pipelining custom data for 
 
 ---
 ## Install
-This repo use [yolov5]([ultralytics/yolov5: YOLOv5 🚀 in PyTorch > ONNX > CoreML > TFLite (github.com)](https://github.com/ultralytics/yolov5)) repository as submodule. 
+This repo use [yolov5](https://github.com/ultralytics/yolov5) repository as submodule. 
 ```
 git clone --recursive "https://github.com/handamn/IndustrialVision-AutoPrep-DataPipeline.git"
 ```
