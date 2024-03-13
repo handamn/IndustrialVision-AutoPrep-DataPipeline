@@ -1,196 +1,48 @@
+import os
+import time
+from datetime import datetime
+import cv2
+import random
+import shutil
+import yaml
+import subprocess
+import torch
+import pandas as pd
+from tqdm import tqdm
 import csv
 
-def baca_file(route, decision):
-    data = {}
-    with open(route, 'r') as file:
-        for line in file:
-            key, values = line.strip().split(': ')
-            data[key] = values.split(' ')
+#from pathlib import path
+#from models.experimental import attempt_load
+#from utils.general import non_max_suppression
 
-    key_list = list(data.keys())
-    value_list = list(data.values())
+def print_menu():
+    print("\nProgram Generator\n")
+    print("Pilih Menu :")
+    print("1. Ambil Gambar")
+    print("2. Pilih Random 50")
+    print("3. Anotasi")
+    print("4. Training Prepare Image")
+    print("5. Auto Anotasi")
+    print("6. Combine")
+    print("7. Training Final\n")
+
+    hasil_menu    = input("Enter Menu                                       : ")
+    # Clear screen command
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("======================================================")
+    return hasil_menu
+
+
+def repeat():
+    get_input = str(input("Finish Process ? (yes/no) : "))
     
-    if decision == "key":
-        return key_list
+    if (get_input == "yes"):
+        condition = True
+        return condition
     
     else:
-        return value_list[decision]
-
-
-def baca_file2(route, decision):
-    data = {}
-    with open(route, 'r') as file:
-        for line in file:
-            key, values = line.strip().split(': ')
-            data[key] = values.split(' ')
-
-    key_list = list(data.keys())
-    value_list = list(data.values())
-
-    return key_list, value_list
-
-
-def data_input_default(route, decision):
-    list_var = baca_file(route, decision)
-    dict_value_input = {}
-
-    for i in range(len(list_var)):
-        value = input("Masukkan Value untuk " + list_var[i] + " : ")
-        dict_value_input[i] = value
-    return dict_value_input
-
-
-
-def simple_route(main_route, decision):
-    if decision == "complete":
-        group_route = main_route + "group.txt"
-    else :
-        group_route = main_route + "group_crop.txt"
-
-    base_route = main_route + "1_Stock_Photo"
-
-    list_of_input = data_input_default(group_route, "key")
-
-    for i in range(len(list_of_input)):
-        base_route += "\\" + list_of_input[i]
-
-        if i == len(list_of_input)-1:
-            code = list_of_input[i]
-    
-    automate_route = base_route + "\\X_Automate"
-
-    return base_route, automate_route
-
-
-def data_input_default2(route, decision):
-    base = route + "group.txt"
-    base2 = route + "group_crop.txt"
-
-    list_var, val_var = baca_file2(base, decision)
-    list_var_crop, val_crop = baca_file2(base2, decision)
-
-    dict_value_input = {}
-    dict_value_input_crop = {}
-
-    for i in range(len(list_var)):
-        value = input("Masukkan Value untuk " + list_var[i] + " : ")
-        dict_value_input[i] = value
-
-        for j in range(len(list_var_crop)):
-            if list_var[i] == list_var_crop[j]:
-                dict_value_input_crop[j] = value
-    
-    return dict_value_input, dict_value_input_crop
-
-
-def simple_route2(main_route):
-    og_base_route = main_route + "1_Stock_Photo"
-    og_list_of_input, crop_list_of_input = data_input_default2(main_route, "key")
-
-    input_result_route = ""
-    mod_input_result_route = ""
-
-    for i in range(len(og_list_of_input)):
-        og_base_route += "\\" + og_list_of_input[i]
-        input_result_route += og_list_of_input[i] + "\\"
-
-        if i == len(og_list_of_input)-1:
-            code = og_list_of_input[i]
-
-    og_automate_route = og_base_route + "\\X_Automate"
-
-    for i in range(len(crop_list_of_input)):
-        if i < (len(crop_list_of_input)-1):
-            mod_input_result_route += crop_list_of_input[i] + "\\"
-
-
-    return og_base_route, og_automate_route, code, input_result_route, mod_input_result_route
-
-def csv_file_reader(nama_file):
-    data = []
-    with open(nama_file, 'r') as file_csv:
-        reader = csv.reader(file_csv)
-        for baris in reader:
-            data.append(baris[0])  # Ambil elemen pertama dari setiap baris
-    return data
-
-def split_data_main():
-    print("hehehe")
-
-def split_data(route_path, decision):
-    base_route, automate_route = simple_route(route_path, decision)
-
-    print("")
-    print(base_route)
-    print(automate_route)
-    print("")
-
-    parse_base_route = base_route.split("\\")
-    parse_base_route_class = parse_base_route[:-1]
-    index_class_route = "\\".join(parse_base_route_class)
-
-    class_file = index_class_route + "\\index_class.csv"
-    data_csv = csv_file_reader(class_file)
-    output = route_path + "2_Train_Artefact"
-
-    get_code = parse_base_route[-1]
-    
-    for code in data_csv:
-        print(code)
-        print(index_class_route + "\\" + code)
-
-
-def coba(route_path, decision):
-    base_route, automate_route = simple_route(route_path, decision)
-
-    print(base_route)
-    if base_route.startswith(route_path+"1_Stock_Photo\\"):
-        value_input = base_route[len(route_path+"1_Stock_Photo\\"):]
-
-    print(value_input)
-    print("============")
-    print("")
-
-def coba2(route_path):
-    base_route, automate_route, code, input_result_route, mod_input_result_route = simple_route2(route_path)
-
-    parse_base_route = base_route.split("\\")
-    parse_base_route_class = parse_base_route[:-1]
-    index_class_route = "\\".join(parse_base_route_class)
-
-    class_file = index_class_route + "\\index_class.csv"
-    data_csv = csv_file_reader(class_file)
-    output = route_path + "2_Train_Artefact"
-
-    print("")
-    print(route_path)
-    print("")
-    print(base_route)
-    print("")
-    print(automate_route)
-    print("")
-    print(code)
-    print("")
-    print(input_result_route)
-    print("")
-    print(mod_input_result_route)
-
-
-coba2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
-
-
-#######################################
-#######################################
-
-import csv
-
-def csv_file_reader(nama_file):
-    data = []
-    with open(nama_file, 'r') as file_csv:
-        reader = csv.reader(file_csv)
-        for baris in reader:
-            data.append(baris[0])  # Ambil elemen pertama dari setiap baris
-    return data
+        condition = False
+        return condition
 
 
 def baca_file(route):
@@ -203,9 +55,9 @@ def baca_file(route):
     with open(route, 'r') as file:
         for line in file:
             stripped_line = line.strip()
-            if not stripped_line:
+            if not stripped_line:  # Cek apakah baris kosong
                 empty_found = True
-                continue
+                continue  # Loncat ke baris berikutnya
 
             key, values = stripped_line.split(': ')
             value_list = values.split(' ')
@@ -226,112 +78,260 @@ def baca_file(route):
     return key_list, value_list, before_key, before_value, after_key, after_value
     
 
-def data_input_default(route):
-    base = route + "group.txt"
 
-    key_list, value_list, before_key, before_value, after_key, after_value = baca_file(base)
-    
+def data_input_default(route, decision):
+    key_list, value_list, before_key, before_value, after_key, after_value = baca_file(route)
     dict_value_input = {}
-    dict_value_input_crop = {}
 
     for i in range(len(key_list)):
-        value = input("Masukkan Value untuk " + key_list[i] + " : ")
+        value = input("Enter Value for " + key_list[i] + "            : ")
         dict_value_input[i] = value
-
-        for j in range(len(after_key)):
-            if key_list[i] == after_key[j]:
-                dict_value_input_crop[j] = value
-
-    return dict_value_input, dict_value_input_crop
+    return dict_value_input
 
 
-def simple_route(main_route):
-    og_base_route = main_route + "1_Stock_Photo"
-    og_list_of_input, crop_list_of_input = data_input_default(main_route)
+def data_train_input():
+    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
+    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
+    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
+    pat_count     = input("Enter Patience            (ex : 100)             : ")
 
-    input_result_route = ""
-    mod_input_result_route = ""
-
-    for i in range(len(og_list_of_input)):
-        og_base_route += "\\" + og_list_of_input[i]
-        input_result_route += og_list_of_input[i] + "\\"
-
-        if i == len(og_list_of_input)-1:
-            code = og_list_of_input[i]
-
-    og_automate_route = og_base_route + "\\X_Automate"
-
-    for i in range(len(crop_list_of_input)):
-        if i < (len(crop_list_of_input)-1):
-            mod_input_result_route += crop_list_of_input[i] + "\\"
-
-    return og_base_route, og_automate_route, code, input_result_route, mod_input_result_route
+    return epochs_count, model_type, batch_count, pat_count
 
 
-def store_route_path(value, current_combination = []):
-    if not value:
-        dor = "\\".join(current_combination)
-        return dor
-
+def simple_route(main_route, decision):
+    if decision == "complete":
+        group_route = main_route + "group.txt"
     else :
-        result = []
-        for item in value[0]:
-            result.append(store_route_path(value[1:], current_combination + [item]))
-        
-        return result
+        group_route = main_route + "group_crop.txt"
 
+    base_route = main_route + "1_Stock_Photo"
 
-def flatten_list(nested_list):
-    flattened_list = []
-    for item in nested_list:
-        if isinstance(item, list):
-            flattened_list.extend(flatten_list(item))
-        else:
-            flattened_list.append(item)
-    return flattened_list
+    list_of_input = data_input_default(group_route, "key")
 
+    for i in range(len(list_of_input)):
+        base_route += "\\" + list_of_input[i]
 
-def coba(route_path):
-    base = route_path + "group.txt"
-
-    base_route, automate_route, code, input_result_route, mod_input_result_route = simple_route(route_path)
-
-    OK_Count = int(input("Enter OK Value              (ex : 200)     : "))
-    NG_Count = int(input("Enter NG Value each folder  (ex : 35)      : "))
-    percentage = input("Enter OK Percentage         (ex: 80)       : ")
-    percentage = int(percentage) / 100
-
-    key_list, value_list, before_key, before_value, after_key, after_value = baca_file(base)
-
-    parse_base_route = base_route.split("\\")
-    parse_base_route_class = parse_base_route[:-1]
-    index_class_route = "\\".join(parse_base_route_class)
-
-    class_file = index_class_route + "\\index_class.csv"
-    data_csv = csv_file_reader(class_file)
+        if i == len(list_of_input)-1:
+            code = list_of_input[i]
     
-    Stock_Photo = route_path + "1_Stock_Photo\\"
-    Train_Artefact = route_path + "2_Train_Artefact\\"
+    automate_route = base_route + "\\X_Automate"
 
-    for second_main in flatten_list(store_route_path(before_value)):
-        for codex in data_csv:
-            if codex == code :
-                print("======================")
-                print("OK")
-                print(Stock_Photo + second_main + "\\" + mod_input_result_route  + codex)
-                print(Train_Artefact + mod_input_result_route + code)
-                print("======================")
-                print("")
-            else :
-                print("======================")
-                print("NG")
-                print(Stock_Photo + second_main + "\\" + mod_input_result_route  + codex)
-                print(Train_Artefact + mod_input_result_route + code)
-                print("======================")
-                print("")
-
-coba("F:\\repo_generator\\V1\\data_generator\\Project\\RB2A\\")
+    return base_route, automate_route, code
 
 
-#######################################
-#######################################
+def read_csv(file_name):
+    try:
+        with open(file_name, 'r', newline='') as file_csv:
+            reader = csv.reader(file_csv)
+            data = [row[0] for row in reader]  # Ambil hanya kolom pertama dari setiap baris
+            return sorted(data)  # Mengurutkan data
+    except FileNotFoundError:
+        return []
+
+
+def write_csv(file_name, data):
+    with open(file_name, 'w', newline='') as file_csv:
+        writer = csv.writer(file_csv)
+        for item in data:
+            writer.writerow([item])
+
+
+def add_data(data, input_string):
+    data.append(input_string)
+    return sorted(data)
+
+
+def capture(route_path, decision):
+    base_route, automate_route, code = simple_route(route_path, decision)
+    image_count = int(input("Enter How Many Image      (ex : 100)             : "))
+
+    image_route = base_route + "\\images" 
+    cap = cv2.VideoCapture(5)
+
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 320)
+
+        # Looping image save program
+    for imgnum in range(image_count):
+        print('Collecting image {}'.format(imgnum))
+        ret, frame = cap.read()
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+        imgname = os.path.join(image_route, f'{timestamp}.jpg')
+        cv2.imwrite(imgname,frame)
+        cv2.imshow('frame',frame)
+        time.sleep(0.0001)
+        if cv2.waitKey(1)&0xFF ==ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+    print("")
+    print("======================================================================================================")
+    print("")
+    print("----------------------------------------AMBIL GAMBAR BERHASIL-----------------------------------------")
+    print("")
+    print("------------------------------------------Gambar disimpan di------------------------------------------")
+    print("")
+    print(image_route)
+    print("")
+    print("======================================================================================================")
+
+
+def copy_random_images(source_folder, destination_folder, num_images):
+    image_files = [f for f in os.listdir(source_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    num_images = min(num_images, len(image_files))
+    random_images = random.sample(image_files, num_images)
+
+    for image in random_images:
+        source_path = os.path.join(source_folder, image)
+        destination_path = os.path.join(destination_folder, image)
+        shutil.copy2(source_path, destination_path)
+        print(f"Copied: {image}")
+
+
+def pick_rand(route_path, decision):
+    base_route, automate_route, code = simple_route(route_path, decision)
+
+    image_count = int(input("Enter How Many Image      (ex : 100)             : "))
+
+    image_source_route = base_route + "\\images"
+    sub_automate_image_route = automate_route + "\\images"
+    sub_automate_labels_route = automate_route + "\\labels"
+    txt_route = sub_automate_labels_route + "\\classes.txt"
+    yaml_route = automate_route + "\\" + code + ".yaml"
+
+    with open(txt_route, 'w') as file:
+        file.write(code)
+
+    copy_random_images(image_source_route, sub_automate_image_route, image_count)
+
+    data = {
+        'train' : automate_route,
+        'val' : automate_route,
+        'names' : {0: code}
+    }
+
+    with open(yaml_route, 'w') as file:
+        yaml.dump(data, file, default_flow_style=False, sort_keys=False)
+
+    print("FINISH")
+
+
+def labeling(route_path, decision):
+    base_route, automate_route, code = simple_route(route_path, decision)
+    image_route = automate_route + "\\images"
+    label_route = automate_route + "\\labels\\classes.txt"
+
+    command = ["labelimg",
+                image_route,
+                label_route]
+
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+
+
+def train(folder_route, program_route, decision):
+    if decision == "Begin":
+        group_route = folder_route + "group.txt"
+        base_route = folder_route + "1_Stock_Photo"
+    
+    else :
+        group_route = folder_route + "group_crop.txt"
+        base_route = folder_route + "2_Train_Artefact"
+
+    list_of_input = data_input_default(group_route, "key")
+    epochs_count, model_type, batch_count, pat_count = data_train_input()
+
+    for i in range(len(list_of_input)):
+        base_route += "\\" + list_of_input[i]
+
+        if i == len(list_of_input)-1:
+            code = list_of_input[i]
+
+    if decision == "Begin":
+        automate_route = base_route + "\\X_Automate"
+    
+    else :
+        automate_route = base_route
+    
+    yaml_route = automate_route + "\\" + code + ".yaml"
+    project_source = automate_route + "\\Models"
+    epochs_source = epochs_count
+    cfg_source = program_route + "\\models\\" + model_type + ".yaml"
+    batch_size_source = batch_count
+    patience_size_source = pat_count
+    train_file = program_route + "\\yolov5\\train.py"
+
+    argument = ["--data", yaml_route,
+                "--project", project_source,
+                "--epochs", epochs_source,
+                "--weights", "",
+                "--cfg", cfg_source,
+                "--batch-size", batch_size_source,
+                "--patience", patience_size_source,
+                "--imgs", str(320)]
+
+    run_python_file(train_file, argument)
+
+
+def Auto_Anotate(route_path, program_route, decision):
+    base_route, automate_route, code = simple_route(route_path, decision)
+    
+    model_type = str(input("Enter Model Train              (ex : train1)  : "))
+
+    folder_train_images = base_route + "\\images"
+    folder_train_labels = base_route + "\\labels"
+    folder_model = base_route + "\\Models\\" + model_type + "\\weights\\best.pt"
+    yolo_route = program_route + "\\yolov5"
+    model = torch.hub.load(yolo_route, "custom", path=folder_model, source = "local", force_reload = True)
+
+    train_list = os.listdir(folder_train_images)
+    
+    for name in tqdm(train_list, desc= "Processing Images"):
+        label_name = f"{name.split('.')[0]}.txt"
+        label_directory = os.path.join(folder_train_labels, label_name)
+
+        image_directory = os.path.join(folder_train_images, name)
+        results = model(image_directory)
+        xyxy_results = results.pandas().xyxy[0]
+
+        if not xyxy_results.empty:
+            xmin = xyxy_results['xmin'][0]
+            ymin = xyxy_results['ymin'][0]
+            xmax = xyxy_results['xmax'][0]
+            ymax = xyxy_results['ymax'][0]
+            group = xyxy_results['class'][0]
+
+            index_class = 0
+
+            xcenter = ((xmax+xmin)/2)/640
+            ycenter = ((ymax+ymin)/2)/480
+            width = (xmax-xmin)/640
+            height = (ymax-ymin)/480
+
+            text = str(index_class) + " " + str(xcenter) + " " + str(ycenter) + " " + str(width) + " " + str(height)
+
+            with open(label_directory, "w") as f:
+                f.write(text)
+        
+        words = base_route.split('\\')
+        code_type = words[-1]
+
+    with open(f"{folder_train_labels}/classes.txt", "w") as f:
+        f.write(code_type)
+    
+    folder_csv = base_route + "\\class_index.csv"
+
+    if not os.path.exists(folder_csv):
+        with open(folder_csv, "w", newline=""):
+            pass
+
+    data = read_csv(folder_csv)
+    data = add_data(data, code_type)
+    write_csv(folder_csv, data)
+
+def run_python_file(file_name, arguments=None):
+    try:
+        subprocess.run(["python", file_name] + (arguments or []), check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
