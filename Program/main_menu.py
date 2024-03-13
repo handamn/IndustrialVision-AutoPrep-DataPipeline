@@ -5,6 +5,7 @@ import funct_foldering as foldering
 
 condition = False
 
+#Basis folder
 ground_folder = os.path.dirname(os.path.dirname(os.path.abspath(sys.argv[0])))
 project_folder = ground_folder + "\\Project"
 program_folder = ground_folder + "\\Program"
