@@ -1,50 +1,65 @@
 import os
-import random
-import shutil
-import yaml
-import subprocess
+
+BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
+
+def create_folders(folder_name, folder_depths, folder_names, current_depth=0):
+    
+    if current_depth == len(folder_depths) - 1:
+        last_subfolder_names = []
+        for i in range(folder_depths[current_depth]):
+            num_subfolders = int(input(f"Masukkan jumlah subfolder untuk folder {folder_names[current_depth][i]}: "))
+            names = []
+            for j in range(num_subfolders):
+                name = input(f"Masukkan nama subfolder {j+1} untuk folder {folder_name[len(BASIS_FOLDER):]} {folder_names[current_depth][i]}: ")
+                names.append(name)
+            last_subfolder_names.append(names)
+        
+        for i in range(folder_depths[current_depth]):
+            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, folder_names[current_depth][i])
+            os.makedirs(subfolder_name)  # Membuat folder
+            
+            for name in last_subfolder_names[i]:
+                os.makedirs(os.path.join(subfolder_name, name))
+                os.makedirs(os.path.join(subfolder_name, name, "images"))
+                os.makedirs(os.path.join(subfolder_name, name, "labels"))
+                os.makedirs(os.path.join(subfolder_name, name, "X_Automasi"))
+                os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "images"))
+                os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "labels"))
+    
+    elif current_depth < len(folder_depths) - 1:  # Periksa apakah sudah mencapai kedalaman terakhir
+        for i in range(folder_depths[current_depth]):
+            subfolder_name = os.path.join(BASIS_FOLDER, folder_name, folder_names[current_depth][i])
+            os.makedirs(subfolder_name)  # Membuat folder
+            create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1)
 
 # Clear screen command
 os.system('cls' if os.name == 'nt' else 'clear')
 
-BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\"
+# Inisialisasi list kosong
+folder_names = []
 
 print("1. new project")
 print("2. load project")
 
-decision = input("masukkan : ")
+decision = input("Masukkan Menu : ")
 if int(decision) == 1:
-    print("Buat projek")
-    nama_folder = input("masukkan nama project : ")
-    os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder)
+    print("Buat Project")
+    print("")
+    ####################
+    nama_project = input("Masukkan Nama Project : ")
+    print("")
 
-    count_subfolder = input("Masukkan berapa subfolder (in/out) : ")
-    for x in range(0,int(count_subfolder)):
-        nama_folder_x = input("Masukkan Nama Folder X ")
-        item_subfolder = input("Berapa banyak item subfolder : ")
-        os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\")
-        for i in range(0,int(item_subfolder)):
-            nama_subfolder = input("masukkan nama subfoldernya ")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"images"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"labels"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\"+"images"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"X_Automasi"+"\\"+"labels"+"\\")
-            os.mkdir(BASIS_FOLDER+"Project\\"+nama_folder+"\\"+nama_folder_x+"\\"+nama_subfolder+"\\"+"models"+"\\")
-            i+=1
-        x+=1
+    kedalaman = input("Masukkan Kedalaman Folder : ")
+    isi_kedalaman = []
+    for i in range(0, int(kedalaman)):
+        item = int(input(f"Masukkan jumlah subfolder untuk tingkat kedalaman {i+1}: "))
+        isi_kedalaman.append(item)
 
-else :
-    print("list project")
-    print()
-    dir_list = os.listdir("F:\\repo_generator\\V1\\data_generator\\Project")
-    x = 1
-    for i in dir_list:
-        print(str(x)+" "+str(i))
-        x+=1
+        subfolders = []
+        for j in range(item):
+            subfolder_name = input(f"Masukkan nama subfolder {j+1} untuk folder {nama_project}: ")
+            subfolders.append(subfolder_name)
+        
+        folder_names.append(subfolders)        
 
-    masukan = input("coba entry index")
-    print(dir_list[int(masukan)-1])
-    
-    
+    create_folders(nama_project, isi_kedalaman, folder_names)
