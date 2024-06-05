@@ -41,6 +41,7 @@ def data_input_default(route):
     return dict_value_input
 
 
+
 def capture(route_path):
     group_route = route_path + "group.txt"
     image_route = route_path + "1_Stock_Photo"
