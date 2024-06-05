@@ -1,8 +1,9 @@
 import os
 import shutil
 import funct_foldering as foldering
+import funct_all_function as functioning
 
-BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\"
+base_folder = "F:\\repo_generator\\V1\\data_generator\\Project\\"
 
 
 def print_menu():
@@ -50,7 +51,9 @@ if int(decision) == 1:
     kedalaman = input("Masukkan Kedalaman Folder : ")
     isi_kedalaman = []
     group = []
+    x = 0
     for i in range(0, int(kedalaman)):
+        print("")
         group_folder = input(f"Masukkan nama grouping folder tingkat kedalaman {i+1}: ")
         group.append(group_folder)
         item = int(input(f"Masukkan jumlah subfolder untuk tingkat kedalaman {i+1}: "))
@@ -60,16 +63,21 @@ if int(decision) == 1:
         for j in range(item):
             subfolder_name = input(f"Masukkan nama subfolder {j+1} untuk folder {nama_project}: ")
             subfolders.append(subfolder_name)
-        
+
         folder_names.append(subfolders)
+        x+=1
+    
+    print("")
+    coba = input(f"Masukkan nama grouping folder tingkat kedalaman {x+1}: ")
+    group.append(coba)
 
     foldering.create_folders(os.path.join(BASIS_FOLDER, nama_project), isi_kedalaman, folder_names, BASIS_FOLDER)
     write_text(nama_project, group)
 
 elif int(decision) == 2:
-    dir_list = os.listdir(BASIS_FOLDER) 
+    dir_list = os.listdir(base_folder) 
 
-    print("Files and directories in '", BASIS_FOLDER, "' :") 
+    print("Files and directories in '", base_folder, "' :") 
 
     # print the list 
     print(dir_list)
@@ -79,11 +87,16 @@ elif int(decision) == 2:
     pilih_folder = input("Masukkan Nama Project : ")
     print("Saat ini sedang di project " + pilih_folder)
 
-    BASIS_FOLDER = "F:\\repo_generator\\V1\\data_generator\\Project\\" + pilih_folder + "\\"
-
-    print(BASIS_FOLDER)
+    base_folder_menu_1 = base_folder + pilih_folder + "\\"
 
     pilih_menu = print_menu()
 
     if pilih_menu == "1":
-        print("UHUYYYY")
+        functioning.capture(base_folder_menu_1)
+    
+    elif pilih_menu == "2":
+        functioning.pick_rand(base_folder_menu_1)
+    
+    elif pilih_menu == "3":
+        print(base_folder_menu_1)
+        functioning.labeling(base_folder_menu_1)
