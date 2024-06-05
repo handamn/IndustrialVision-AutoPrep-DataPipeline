@@ -90,3 +90,28 @@ def pick_rand(route_path):
 
         if i == len(list_of_input)-1:
             code = list_of_input[i]
+
+    
+    source_route = image_route + "\\images"
+    automate_route = image_route + "\\X_Automasi"
+    sub_automate_image_route = automate_route + "\\images"
+    sub_automate_labels_route = automate_route + "\\labels"
+    txt_route = sub_automate_labels_route + "\\classes.txt"
+    yaml_route = automate_route + "\\" + code + ".yaml"
+
+    with open(txt_route, 'w') as file:
+        file.write(code)
+
+    copy_random_images(source_route, sub_automate_image_route, image_count)
+
+
+    data = {
+        'train' : automate_route,
+        'val' : automate_route,
+        'names' : {0: code}
+    }
+
+    with open(yaml_route, 'w') as file:
+        yaml.dump(data, file, default_flow_style=False, sort_keys=False)
+
+    print("FINISH")
