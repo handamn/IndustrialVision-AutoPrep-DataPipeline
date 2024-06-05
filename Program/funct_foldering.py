@@ -92,3 +92,55 @@ def duplicate_structure(source_folder, target_folder):
             os.makedirs(os.path.join(root, "test", "images"))
             os.makedirs(os.path.join(root, "test", "labels"))
             os.makedirs(os.path.join(root, "models"))
+
+
+def list_all_subfolders_with_longest(path):
+    subfolders = []
+    max_depth = 0
+    deepest_path = None
+    for root, dirs, _ in os.walk(path):
+        for dir_name in dirs:
+            dir_path = os.path.join(root, dir_name)
+            subfolders.append(dir_path)
+            # Update informasi tentang subfolder terdalam
+            depth = len(os.path.relpath(dir_path, path).split(os.sep))
+            if depth > max_depth:
+                max_depth = depth
+                deepest_path = dir_path
+
+    parsed_deepest_path = deepest_path.split(os.sep)
+    
+    return subfolders, parsed_deepest_path
+
+
+def cut_folder(name_project, group_len, index_group):
+    script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+    clean_script = script_directory.split('\\')
+    base_route = ""
+    for i in range(len(clean_script)):
+        if clean_script[i] != "Program":
+            if (i==0):
+                base_route = clean_script[i]
+            
+            else :
+                base_route += "\\" + clean_script[i]
+    
+
+    base_route += "\\" + "Project" + "\\" + name_project
+    ground_route = base_route
+    ground_route += "\\" + "3_Base"
+    all_subfolders, deepest_path = list_all_subfolders_with_longest(ground_route)
+    deepest_path_2 = deepest_path[: len(deepest_path) - 2]
+    deepest_path_2 = deepest_path_2[- group_len:]
+    copy_route = ground_route
+
+    for i in range(0, index_group):
+        copy_route += "\\" + deepest_path_2[i]
+
+    dest_route = base_route
+    dest_route += "\\" + "2_Train_artefact"
+    delete_route = base_route
+    delete_route += "\\" + "3_Base"
+
+    shutil.copytree(copy_route, dest_route)
+    shutil.rmtree(delete_route)
