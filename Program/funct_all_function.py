@@ -1,23 +1,36 @@
-#this file is basis for all function
-import cv2
 import os
 import time
 from datetime import datetime
 import cv2
+import random
+import shutil
+import yaml
 import subprocess
 
+def print_menu():
+    print("\nProgram Generator\n")
+    print("Pilih Menu :")
+    print("1. Ambil Gambar")
+    print("2. Pilih Random 50")
+    print("3. Anotasi")
+    print("4. Training Prepare Image")
+    print("5. Auto Anotasi")
+    print("6. Combine")
+    print("7. Training Final\n")
+
+    hasil_menu    = input("Enter Menu                                       : ")
+    # Clear screen command
+    os.system('cls' if os.name == 'nt' else 'clear')
+    print("======================================================")
+    return hasil_menu
 
 
-file_path = "F:\\repo_generator\\V1\\data_generator\\Project\\RB24\\group.txt"
-
-##### baca_file function
 def baca_file(route):
     with open(route, 'r') as file:
         lines = [line.strip() for line in file.readlines()]  # Menghapus karakter whitespace dari setiap baris
     return lines
-###############################################
 
-##### Function for input default item
+
 def data_input_default(route):
     list_var = baca_file(route)
     dict_value_input = {}
@@ -25,61 +38,65 @@ def data_input_default(route):
     for i in range(len(list_var)):
         value = input("Masukkan Value untuk " + list_var[i] + " : ")
         dict_value_input[i] = value
-
     return dict_value_input
 
-###############################################
-
-##### ##### collections of cameras function
-fe_path = "F:\\repo_generator\\V1\\data_generator\\Project\\RB24\\group.txt"
-list_of_input = read.data_input_default(fe_path)
-
-jumlah_gambar = int(input("Enter How Many Image      (ex : 100)             : "))
-
-basis_folder = "F:\\repo_generator\\V1\\data_generator\\Project\\RB24\\1_Stock_Photo"
-
-simpan_folder = basis_folder
-
-for i in range(len(list_of_input)):
-    simpan_folder += "\\" + list_of_input[i]
-
-simpan_folder += "\\images"
-
-number_images = jumlah_gambar
-
-cap = cv2.VideoCapture(0)
-
-# Looping image save program
-for imgnum in range(number_images):
-    print('Collecting image {}'.format(imgnum))
-    ret, frame = cap.read()
-
-    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
-
-    imgname = os.path.join(simpan_folder, f'{timestamp}.jpg')
-    cv2.imwrite(imgname,frame)
-    cv2.imshow('frame',frame)
-    time.sleep(0.0001)
-
-    if cv2.waitKey(1)&0xFF ==ord('q'):
-        break
-
-cap.release()
-cv2.destroyAllWindows()
-print("")
-print("======================================================================================================")
-print("")
-print("----------------------------------------AMBIL GAMBAR BERHASIL-----------------------------------------")
-print("")
-print("------------------------------------------Gambar disimpan di------------------------------------------")
-print("")
-print(simpan_folder)
-print("")
-print("======================================================================================================")
-############################ End of Collections
 
 
-##### pick_rand funtion
+def capture(route_path):
+    group_route = route_path + "group.txt"
+    image_route = route_path + "1_Stock_Photo"
+
+    list_of_input = data_input_default(group_route)
+    image_count = int(input("Enter How Many Image      (ex : 100)             : "))
+
+    for i in range(len(list_of_input)):
+        image_route += "\\" + list_of_input[i]
+
+    image_route += "\\images" 
+
+    cap = cv2.VideoCapture(0)
+
+        # Looping image save program
+    for imgnum in range(image_count):
+        print('Collecting image {}'.format(imgnum))
+        ret, frame = cap.read()
+
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S_%f")[:-3]
+
+        imgname = os.path.join(image_route, f'{timestamp}.jpg')
+        cv2.imwrite(imgname,frame)
+        cv2.imshow('frame',frame)
+        time.sleep(0.0001)
+
+        if cv2.waitKey(1)&0xFF ==ord('q'):
+            break
+
+    cap.release()
+    cv2.destroyAllWindows()
+    print("")
+    print("======================================================================================================")
+    print("")
+    print("----------------------------------------AMBIL GAMBAR BERHASIL-----------------------------------------")
+    print("")
+    print("------------------------------------------Gambar disimpan di------------------------------------------")
+    print("")
+    print(image_route)
+    print("")
+    print("======================================================================================================")
+
+
+def copy_random_images(source_folder, destination_folder, num_images):
+    image_files = [f for f in os.listdir(source_folder) if f.lower().endswith(('.png', '.jpg', '.jpeg'))]
+    num_images = min(num_images, len(image_files))
+    random_images = random.sample(image_files, num_images)
+
+    for image in random_images:
+        source_path = os.path.join(source_folder, image)
+        destination_path = os.path.join(destination_folder, image)
+        shutil.copy2(source_path, destination_path)
+        print(f"Copied: {image}")
+
+
 def pick_rand(route_path):
     group_route = route_path + "group.txt"
     image_route = route_path + "1_Stock_Photo"
@@ -95,7 +112,7 @@ def pick_rand(route_path):
 
     
     source_route = image_route + "\\images"
-    automate_route = image_route + "\\X_Automasi"
+    automate_route = image_route + "\\X_Automate"
     sub_automate_image_route = automate_route + "\\images"
     sub_automate_labels_route = automate_route + "\\labels"
     txt_route = sub_automate_labels_route + "\\classes.txt"
@@ -118,10 +135,7 @@ def pick_rand(route_path):
 
     print("FINISH")
 
-###############################################
 
-
-##### labeling function
 def labeling(route_path):
     group_route = route_path + "group.txt"
     base_route = route_path + "1_Stock_Photo"
@@ -134,7 +148,7 @@ def labeling(route_path):
         if i == len(list_of_input)-1:
             code = list_of_input[i]
     
-    automate_route = base_route + "\\X_Automasi"
+    automate_route = base_route + "\\X_Automate"
     image_route = automate_route + "\\images"
     label_route = automate_route + "\\labels\\classes.txt"
 
@@ -144,4 +158,4 @@ def labeling(route_path):
 
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
-###############################################
+
