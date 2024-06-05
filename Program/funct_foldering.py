@@ -3,7 +3,7 @@ import random
 import shutil
 import yaml
 import subprocess
-
+import sys
 
 def create_folders(folder_name, folder_depths, folder_names, current_depth=0, is_folder_A=True):
     if current_depth == 0:  # Menambahkan pembuatan folder nama project, 1_Stock_Photo, dan 2_Train_Artefact
@@ -22,7 +22,7 @@ def create_folders(folder_name, folder_depths, folder_names, current_depth=0, is
         
         # Duplikasi struktur folder 1_Stock_Photo ke 2_Train_Artefact
         for folder in stock_photo_structure:
-            train_artefact_folder = folder.replace("1_Stock_Photo", "2_Train_Artefact")
+            train_artefact_folder = folder.replace("1_Stock_Photo", "3_Base")
             os.makedirs(train_artefact_folder)
             duplicate_structure(folder, train_artefact_folder)
     
