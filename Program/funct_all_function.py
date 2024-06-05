@@ -185,9 +185,39 @@ def labeling(route_path):
     stdout, stderr = process.communicate()
 
 
-def train(route_path, program_route):
-    base_route, automate_route = simple_route(route_path)
+
+def data_train_input():
+    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
+    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
+    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
+    pat_count     = input("Enter Patience            (ex : 100)             : ")
+
+    return epochs_count, model_type, batch_count, pat_count
+
+def train(folder_route, program_route, decision):
+    if decision == "Begin":
+        group_route = folder_route + "group.txt"
+        base_route = folder_route + "1_Stock_Photo"
+    
+    else :
+        group_route = folder_route + "group_crop.txt"
+        base_route = folder_route + "2_Train_Artefact"
+
+    list_of_input = data_input_default(group_route)
     epochs_count, model_type, batch_count, pat_count = data_train_input()
+
+    for i in range(len(list_of_input)):
+        base_route += "\\" + list_of_input[i]
+
+        if i == len(list_of_input)-1:
+            code = list_of_input[i]
+
+    if decision == "Begin":
+        automate_route = base_route + "\\X_Automate"
+    
+    else :
+        automate_route = base_route
+
     
     yaml_route = automate_route + "\\" + code + ".yaml"
     project_source = automate_route + "\\Models"
