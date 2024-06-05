@@ -1,146 +1,193 @@
 import os
-import random
-import shutil
-import yaml
-import subprocess
 import sys
+import csv
 
-def create_folders(folder_name, folder_depths, folder_names, current_depth=0, is_folder_A=True):
-    if current_depth == 0:  # Menambahkan pembuatan folder nama project, 1_Stock_Photo, dan 2_Train_Artefact
-        project_folder = os.path.join(BASIS_FOLDER, folder_name)
-        os.makedirs(project_folder)
+##############################
+def Create_Dir_Base(base, branch, value_list, current_combination=[]):
+    if not value_list:
+        path_create = base + branch + "\\" + "\\".join(current_combination)
+        os.mkdir(path_create)
+
+    else:
+        for item in value_list[0]:
+            Create_Dir_Base(base, branch, value_list[1:], current_combination + [item])
+
+
+def Store_Dir_Base(value_list, current_combination=[]):
+    if not value_list:
+        # Base case: If value_list is empty, return the current combination
+        return "\\".join(current_combination)
+    else:
+        combinations = []
+        # Recursive case: Iterate through each item in the current list and call the function recursively
+        for item in value_list[0]:
+            combinations.append(Store_Dir_Base(value_list[1:], current_combination + [item]))
+        return combinations
+
+
+def flatten_list(nested_list):
+    flattened_list = []
+    for item in nested_list:
+        if isinstance(item, list):
+            flattened_list.extend(flatten_list(item))
+        else:
+            flattened_list.append(item)
+    return flattened_list
+
+
+def write_text(link_path, list_name, name_file):
+    file_name = link_path + "\\" + name_file + ".txt"
+    with open(file_name, 'w+') as f:
+        for items in list_name:
+            f.write('%s\n' %items)
+    f.close()
+
+
+def create_folder(source_path, list_value, subject_folder):
+    Create_Dir_list_3 = []
+    for i in range(len(list_value)):
+        if i+1 == len(list_value):
+            Create_Dir_list_3.append(list_value[i])
+            Create_Dir_Base(source_path, subject_folder, Create_Dir_list_3)
         
-        # Menyimpan struktur folder 1_Stock_Photo
-        stock_photo_structure = []
-        
-        # Memasukkan kedalaman folder dan subfolder ke dalam 1_Stock_Photo
-        for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(project_folder, "1_Stock_Photo", folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat subfolder
-            stock_photo_structure.append(subfolder_name)
-            create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1, is_folder_A=True)
-        
-        # Duplikasi struktur folder 1_Stock_Photo ke 2_Train_Artefact
-        for folder in stock_photo_structure:
-            train_artefact_folder = folder.replace("1_Stock_Photo", "3_Base")
-            os.makedirs(train_artefact_folder)
-            duplicate_structure(folder, train_artefact_folder)
+        else :
+            Create_Dir_list_3.append(list_value[i])
+            Create_Dir_Base(source_path, subject_folder, Create_Dir_list_3)
+
+
+def length_measure(list_value):
+    length_count = 1
+    for i in range(len(list_value)):
+        length_count *= len(list_value[i])
+    return length_count
+
+
+def list_to_csv(data_list, file_name):
+    with open(file_name, 'w', newline='') as csv_file:
+        writer = csv.writer(csv_file)
+        for item in data_list:
+            writer.writerow([item])
+
+##############################
+
+def master_program(base_folder):
+    Name_Project = str(input("Enter Name Project : "))
+    Folder_Depth = int(input("Enter Folder Depth : "))
+
+    final_path = base_folder + "\\" + Name_Project + "\\"
+    st_path = final_path + "1_Stock_Photo\\"
+    nd_path = final_path + "2_Train_Artefact\\"
+
+    os.mkdir(final_path)
+    os.mkdir(st_path)
+    os.mkdir(nd_path)
+
+    directory_dict = {}
+
+    for i in range(Folder_Depth - 1):
+        Name_Group = str(input("Enter Grouping Name for depth " + str(i+1) + " : "))
+        count_subfolder = int(input("Enter How Much Subfolder for " + Name_Group + " : "))
+        sub_folder = []
+        for j in range (count_subfolder):
+            Name_Sub = str(input("Enter Sub Name for " + Name_Group + " Sub " + str(j+1) + " : "))
+            sub_folder.append(Name_Sub)
+        directory_dict[Name_Group] = sub_folder
+
+    key_list = list(directory_dict.keys())
+    value_list = list(directory_dict.values())
+
+    Last_Name_Group = str(input("Enter Grouping Name for depth " + str(Folder_Depth) + " : "))
+    key_list.append(Last_Name_Group)
+    write_text(final_path, key_list, "group")
+
+    potong = str(input("Group Tier to Combine : "))
+    ind = int(key_list.index(potong))
+    new_value_list = value_list[ind+1:]
+
+    new_key_list = key_list[ind+1:]
+    write_text(final_path, new_key_list, "group_crop")
+
+    Length_Folder_Depth = length_measure(value_list)
+    Length_Folder_Depth_2 = length_measure(new_value_list)    
+
+    create_folder(final_path, value_list, "1_Stock_Photo")
+    Storing_Group_Name = Store_Dir_Base(value_list)
+
+    create_folder(final_path, new_value_list, "2_Train_Artefact")
+    Storing_Group_Name_2 = Store_Dir_Base(new_value_list)
+
+
+    A_sub_folder = {}
+    B_sub_folder = {}
+    key_sub_folder = flatten_list(Storing_Group_Name)
+    key_sub_folder_2 = flatten_list(Storing_Group_Name_2)
+
     
-    elif current_depth == len(folder_depths) - 1:
-        last_subfolder_names = []
-        for i in range(folder_depths[current_depth]):
-            num_subfolders = int(input(f"Masukkan jumlah subfolder untuk folder {folder_names[current_depth][i]}: "))
-            names = []
-            for j in range(num_subfolders):
-                name = input(f"Masukkan nama subfolder {j+1} untuk folder {folder_name[len(BASIS_FOLDER):]} {folder_names[current_depth][i]}: ")
-                names.append(name)
-            last_subfolder_names.append(names)
+    for i in range(Length_Folder_Depth):
+        count_subfolder_2 = int(input("Enter How Much Subfolder for " + key_sub_folder[i] +" : "))
+
+        sub_folder_2 = []
+        sub_folder_2a = []
+
+        for j in range(count_subfolder_2):
+            Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j) + "- : "))
+            sub_folder_2.append(Name_Sub_2)
+
+            if (i+1) > (Length_Folder_Depth-Length_Folder_Depth_2):
+                sub_folder_2a.append(Name_Sub_2)
         
-        for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(folder_name, folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat folder
+        A_sub_folder[key_sub_folder[i]] = sub_folder_2
+        B_sub_folder[key_sub_folder[i]] = sub_folder_2a
+
+
+    store_csv = {}
+
+    for item in key_sub_folder:
+        for item2 in A_sub_folder[item]:
+            os.mkdir(st_path + item + "\\" + item2)
+            os.mkdir(st_path + item + "\\" + item2 + "\\images")
+            os.mkdir(st_path + item + "\\" + item2 + "\\labels")
+            os.mkdir(st_path + item + "\\" + item2 + "\\models")
+            os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate")
+            os.mkdir(st_path + item + "\\" + item2 + "\\X_Automate\\images")
+            os.mkdir(st_path + "\\" + item + "\\" + item2 + "\\X_Automate\\labels")
+
+            words = item.split('\\')
+            code_type = words[:1]
+            code2 = ""
+            first_group = code2.join(code_type)
+
+            index_type = words[1:]
+            code0 = "\\"
+            index_store = code0.join(index_type)
+
+
+            if (directory_dict[key_list[0]][0]) == first_group :
+                store_csv[index_store] = A_sub_folder[item]
+                list_to_csv(A_sub_folder[item], (st_path + item + "\\" + "index_class.csv"))
             
-            for name in last_subfolder_names[i]:
-                if is_folder_A:
-                    os.makedirs(os.path.join(subfolder_name, name, "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "labels"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "X_Automasi", "labels"))
-                else:
-                    os.makedirs(os.path.join(subfolder_name, name, "train"))
-                    os.makedirs(os.path.join(subfolder_name, name, "val"))
-                    os.makedirs(os.path.join(subfolder_name, name, "test"))
-                    os.makedirs(os.path.join(subfolder_name, name, "models"))
-                    os.makedirs(os.path.join(subfolder_name, name, "train", "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "train", "labels"))
-                    os.makedirs(os.path.join(subfolder_name, name, "val", "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "val", "labels"))
-                    os.makedirs(os.path.join(subfolder_name, name, "test", "images"))
-                    os.makedirs(os.path.join(subfolder_name, name, "test", "labels"))
-    
-    elif current_depth < len(folder_depths) - 1:  # Periksa apakah sudah mencapai kedalaman terakhir
-        for i in range(folder_depths[current_depth]):
-            subfolder_name = os.path.join(folder_name, folder_names[current_depth][i])
-            os.makedirs(subfolder_name)  # Membuat folder
-            create_folders(subfolder_name, folder_depths, folder_names, current_depth + 1, is_folder_A)
 
-def duplicate_structure(source_folder, target_folder):
-    # Menyalin struktur folder dari sumber ke target
-    for root, dirs, files in os.walk(source_folder):
-        for dir_name in dirs:
-            os.makedirs(os.path.join(root.replace(source_folder, target_folder), dir_name))
-
-    # Menghapus folder images, labels, dan X_Automasi jika ada
-    for root, dirs, files in os.walk(target_folder):
-        if "images" in dirs:
-            shutil.rmtree(os.path.join(root, "images"))
-        if "labels" in dirs:
-            shutil.rmtree(os.path.join(root, "labels"))
-        if "X_Automasi" in dirs:
-            shutil.rmtree(os.path.join(root, "X_Automasi"))
-
-    for root, dirs, files in os.walk(target_folder):
-        if not dirs:
-            os.makedirs(os.path.join(root, "train"))
-            os.makedirs(os.path.join(root, "train", "images"))
-            os.makedirs(os.path.join(root, "train", "labels"))
-            os.makedirs(os.path.join(root, "val"))
-            os.makedirs(os.path.join(root, "val", "images"))
-            os.makedirs(os.path.join(root, "val", "labels"))
-            os.makedirs(os.path.join(root, "test"))
-            os.makedirs(os.path.join(root, "test", "images"))
-            os.makedirs(os.path.join(root, "test", "labels"))
-            os.makedirs(os.path.join(root, "models"))
-
-
-def list_all_subfolders_with_longest(path):
-    subfolders = []
-    max_depth = 0
-    deepest_path = None
-    for root, dirs, _ in os.walk(path):
-        for dir_name in dirs:
-            dir_path = os.path.join(root, dir_name)
-            subfolders.append(dir_path)
-            # Update informasi tentang subfolder terdalam
-            depth = len(os.path.relpath(dir_path, path).split(os.sep))
-            if depth > max_depth:
-                max_depth = depth
-                deepest_path = dir_path
-
-    parsed_deepest_path = deepest_path.split(os.sep)
-    
-    return subfolders, parsed_deepest_path
-
-
-def cut_folder(name_project, group_len, index_group):
-    script_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
-    clean_script = script_directory.split('\\')
-    base_route = ""
-    for i in range(len(clean_script)):
-        if clean_script[i] != "Program":
-            if (i==0):
-                base_route = clean_script[i]
-            
             else :
-                base_route += "\\" + clean_script[i]
-    
+                list_to_csv(store_csv[index_store], (st_path + item + "\\" + "index_class.csv"))
 
-    base_route += "\\" + "Project" + "\\" + name_project
-    ground_route = base_route
-    ground_route += "\\" + "3_Base"
-    all_subfolders, deepest_path = list_all_subfolders_with_longest(ground_route)
-    deepest_path_2 = deepest_path[: len(deepest_path) - 2]
-    deepest_path_2 = deepest_path_2[- group_len:]
-    copy_route = ground_route
 
-    for i in range(0, index_group):
-        copy_route += "\\" + deepest_path_2[i]
 
-    dest_route = base_route
-    dest_route += "\\" + "2_Train_artefact"
-    delete_route = base_route
-    delete_route += "\\" + "3_Base"
 
-    shutil.copytree(copy_route, dest_route)
-    shutil.rmtree(delete_route)
+    count_Length_Folder_Depth = 0
+    for item in key_sub_folder:
+        for item2 in B_sub_folder[item]:
+            x = count_Length_Folder_Depth-((Length_Folder_Depth-Length_Folder_Depth_2))
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2)
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\models")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\images")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\train\\labels")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\images")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\val\\labels")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\images")
+            os.mkdir(nd_path + key_sub_folder_2[x] + "\\" + item2  + "\\test\\labels")
+            
+        count_Length_Folder_Depth+=1
+
