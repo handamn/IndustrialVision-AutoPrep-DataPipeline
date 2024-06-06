@@ -11,9 +11,9 @@ import pandas as pd
 from tqdm import tqdm
 import csv
 
-from pathlib import path
-from models.experimental import attempt_load
-from utils.general import non_max_suppression
+#from pathlib import path
+#from models.experimental import attempt_load
+#from utils.general import non_max_suppression
 
 def print_menu():
     print("\nProgram Generator\n")
@@ -33,18 +33,47 @@ def print_menu():
     return hasil_menu
 
 
+
 def baca_file(route):
+    all_data = {}
+    before_data = {}
+    after_data = {}
+
+    empty_found = False
+
     with open(route, 'r') as file:
-        lines = [line.strip() for line in file.readlines()]  # Menghapus karakter whitespace dari setiap baris
-    return lines
+        for line in file:
+            stripped_line = line.strip()
+            if not stripped_line:  # Cek apakah baris kosong
+                empty_found = True
+                continue  # Loncat ke baris berikutnya
+
+            key, values = stripped_line.split(': ')
+            value_list = values.split(' ')
+            all_data[key] = value_list
+            
+            if empty_found:
+                after_data[key] = value_list
+            else:
+                before_data[key] = value_list
+
+    key_list = list(all_data.keys())
+    value_list = list(all_data.values())
+    before_key = list(before_data.keys())
+    before_value = list(before_data.values())
+    after_key = list(after_data.keys())
+    after_value = list(after_data.values())
+
+    return key_list, value_list, before_key, before_value, after_key, after_value
+    
 
 
-def data_input_default(route):
-    list_var = baca_file(route)
+def data_input_default(route, decision):
+    key_list, value_list, before_key, before_value, after_key, after_value = baca_file(route)
     dict_value_input = {}
 
-    for i in range(len(list_var)):
-        value = input("Masukkan Value untuk " + list_var[i] + " : ")
+    for i in range(len(key_list)):
+        value = input("Masukkan Value untuk " + key_list[i] + " : ")
         dict_value_input[i] = value
     return dict_value_input
 
@@ -58,11 +87,15 @@ def data_train_input():
     return epochs_count, model_type, batch_count, pat_count
 
 
-def simple_route(main_route):
-    group_route = main_route + "group.txt"
+def simple_route(main_route, decision):
+    if decision == "complete":
+        group_route = main_route + "group.txt"
+    else :
+        group_route = main_route + "group_crop.txt"
+
     base_route = main_route + "1_Stock_Photo"
 
-    list_of_input = data_input_default(group_route)
+    list_of_input = data_input_default(group_route, "key")
 
     for i in range(len(list_of_input)):
         base_route += "\\" + list_of_input[i]
@@ -97,8 +130,8 @@ def add_data(data, input_string):
     return sorted(data)
 
 
-def capture(route_path):
-    base_route, automate_route = simple_route(route_path)
+def capture(route_path, decision):
+    base_route, automate_route = simple_route(route_path, decision)
     print(base_route)
     print(automate_route)
     image_count = int(input("Enter How Many Image      (ex : 100)             : "))
@@ -144,8 +177,8 @@ def copy_random_images(source_folder, destination_folder, num_images):
         print(f"Copied: {image}")
 
 
-def pick_rand(route_path):
-    base_route, automate_route = simple_route(route_path)
+def pick_rand(route_path, decision):
+    base_route, automate_route = simple_route(route_path, decision)
 
     image_count = int(input("Enter How Many Image      (ex : 100)             : "))
 
@@ -172,8 +205,8 @@ def pick_rand(route_path):
     print("FINISH")
 
 
-def labeling(route_path):
-    base_route, automate_route = simple_route(route_path)
+def labeling(route_path, decision):
+    base_route, automate_route = simple_route(route_path, decision)
     image_route = automate_route + "\\images"
     label_route = automate_route + "\\labels\\classes.txt"
 
@@ -185,15 +218,6 @@ def labeling(route_path):
     stdout, stderr = process.communicate()
 
 
-
-def data_train_input():
-    epochs_count  = input("Enter How Many Epochs     (ex : 100)             : ")
-    model_type    = input("Enter Train Model Conf    (ex : yolov5l_CBAM_2)  : ")
-    batch_count   = input("Enter Batch Count         (ex : -1)              : ")
-    pat_count     = input("Enter Patience            (ex : 100)             : ")
-
-    return epochs_count, model_type, batch_count, pat_count
-
 def train(folder_route, program_route, decision):
     if decision == "Begin":
         group_route = folder_route + "group.txt"
@@ -203,7 +227,7 @@ def train(folder_route, program_route, decision):
         group_route = folder_route + "group_crop.txt"
         base_route = folder_route + "2_Train_Artefact"
 
-    list_of_input = data_input_default(group_route)
+    list_of_input = data_input_default(group_route, "key")
     epochs_count, model_type, batch_count, pat_count = data_train_input()
 
     for i in range(len(list_of_input)):
@@ -217,7 +241,6 @@ def train(folder_route, program_route, decision):
     
     else :
         automate_route = base_route
-
     
     yaml_route = automate_route + "\\" + code + ".yaml"
     project_source = automate_route + "\\Models"
@@ -238,8 +261,8 @@ def train(folder_route, program_route, decision):
     run_python_file(train_file, argument)
 
 
-def Auto_Anotate(route_path, program_route):
-    base_route, automate_route = simple_route(route_path)
+def Auto_Anotate(route_path, program_route, decision):
+    base_route, automate_route = simple_route(route_path, decision)
     
     model_type = str(input("Enter Model Train              (ex : train1)  : "))
 
@@ -292,4 +315,4 @@ def Auto_Anotate(route_path, program_route):
 
     data = read_csv(folder_csv)
     data = add_data(data, code_type)
-    write_csv(folder_csv, datas)
+    write_csv(folder_csv, data)
