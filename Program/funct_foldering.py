@@ -102,6 +102,7 @@ def master_program(base_folder):
     key_list.append(Last_Name_Group)
 
     directory_dict[Last_Name_Group] = "BLANK"
+    write_text(final_path, directory_dict, "group")
 
     potong = str(input("Group Tier to Combine : "))
     ind = int(key_list.index(potong))
@@ -123,6 +124,13 @@ def master_program(base_folder):
 
     write_text(final_path, write_directory_dict, "group")
 
+
+    new_key_list = key_list[ind+1:]
+    conversion = list(directory_dict.items())
+    conversion.pop(ind)
+    new_directory_dict = dict(conversion)
+
+    write_text(final_path, new_directory_dict, "group_crop")
 
     Length_Folder_Depth = length_measure(value_list)
     Length_Folder_Depth_2 = length_measure(new_value_list)    
