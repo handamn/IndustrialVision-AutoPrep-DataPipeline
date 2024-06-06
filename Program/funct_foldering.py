@@ -39,7 +39,10 @@ def write_text(link_path, list_data, name_file):
     file_name = link_path + "\\" + name_file + ".txt"
     with open(file_name, 'w') as file:
         for key, value in list_data.items():
-            file.write(f"{key}: {' '.join(value)}\n")
+            if key is None or value is None:
+                file.write("\n")
+            else:
+                file.write(f"{key}: {' '.join(value)}\n")
 
 
 def create_folder(source_path, list_value, subject_folder):
@@ -99,12 +102,28 @@ def master_program(base_folder):
     key_list.append(Last_Name_Group)
 
     directory_dict[Last_Name_Group] = "BLANK"
-    
     write_text(final_path, directory_dict, "group")
 
     potong = str(input("Group Tier to Combine : "))
     ind = int(key_list.index(potong))
+    poto = ind+1
     new_value_list = value_list[ind+1:]
+    new_key_list = key_list[ind+1:]
+
+    before_directory_dict_conversion = list(directory_dict.keys())
+    before_directory_dict = {before_directory_dict_conversion[i]:directory_dict[before_directory_dict_conversion[i]] for i in range(ind+1)}
+
+    before_directory_dict[None] = None
+
+    after_directory_dict_conversion = list(directory_dict.items())
+    after_directory_dict_conversion.pop(ind)
+    after_directory_dict = dict(after_directory_dict_conversion)
+
+    write_directory_dict = before_directory_dict
+    write_directory_dict.update(after_directory_dict)
+
+    write_text(final_path, write_directory_dict, "group")
+
 
     new_key_list = key_list[ind+1:]
     conversion = list(directory_dict.items())
