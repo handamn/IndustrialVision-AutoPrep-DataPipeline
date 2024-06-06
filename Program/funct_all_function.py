@@ -183,31 +183,38 @@ coba2("F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\")
 #######################################
 
 def baca_file(route):
-    data = {}
-    data2 = {}
+    all_data = {}
+    before_data = {}
+    after_data = {}
+
+    empty_found = False
+
     with open(route, 'r') as file:
         for line in file:
             stripped_line = line.strip()
-            key2, values2 = line.strip().split(": ")
-            data2[key2] = values2.split(" ")
-            print("1")
-            if stripped_line:
-                print("0")
-                key, values = line.strip().split(': ')
-                data[key] = values.split(' ')
+            if not stripped_line:  # Cek apakah baris kosong
+                empty_found = True
+                continue  # Loncat ke baris berikutnya
+
+            key, values = stripped_line.split(': ')
+            value_list = values.split(' ')
+            all_data[key] = value_list
             
+            if empty_found:
+                after_data[key] = value_list
+            else:
+                before_data[key] = value_list
 
-    key_list = list(data.keys())
-    value_list = list(data.values())
+    key_list = list(all_data.keys())
+    value_list = list(all_data.values())
+    before_key = list(before_data.keys())
+    before_value = list(before_data.values())
+    after_key = list(after_data.keys())
+    after_value = list(after_data.values())
 
-    key_list2 = list(data2.keys())
-    value_list2 = list(data2.values())
-
-    print(key_list)
-    print(key_list2)
-    #print(value_list)
+    return key_list, value_list, before_key, before_value, after_key, after_value
     
-    
+
 def baca_file_read(nama_file):
     with open(nama_file, 'r') as file:
         isi_file = file.read()
@@ -239,7 +246,18 @@ def baca_file_readlines(nama_file):
 # Ganti 'nama_file.txt' dengan nama file teks yang ingin Anda baca
 nama_file = 'F:\\repo_generator\\V1\\data_generator\\Project\\RB1\\group_crop3.txt'
 
-baca_file(nama_file)
-"""baca_file_read(nama_file)
-baca_file_readline(nama_file)
-baca_file_readlines(nama_file)"""
+
+def tes(value, current_combination = []):
+    if not value:
+        dor = "\\".join(current_combination)
+        print(dor)
+
+    else :
+        for item in value[0]:
+            tes(value[1:], current_combination + [item])
+
+
+
+key_list, value_list, before_key, before_value, after_key, after_value = baca_file(nama_file)
+
+tes(before_value)
