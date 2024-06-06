@@ -33,6 +33,17 @@ def print_menu():
     return hasil_menu
 
 
+def repeat():
+    get_input = str(input("Finish Process ? (yes/no) : "))
+    
+    if (get_input == "yes"):
+        condition = True
+        return condition
+    
+    else:
+        condition = False
+        return condition
+
 
 def baca_file(route):
     all_data = {}
@@ -73,7 +84,7 @@ def data_input_default(route, decision):
     dict_value_input = {}
 
     for i in range(len(key_list)):
-        value = input("Masukkan Value untuk " + key_list[i] + " : ")
+        value = input("Enter Value for " + key_list[i] + "            : ")
         dict_value_input[i] = value
     return dict_value_input
 
@@ -105,7 +116,7 @@ def simple_route(main_route, decision):
     
     automate_route = base_route + "\\X_Automate"
 
-    return base_route, automate_route
+    return base_route, automate_route, code
 
 
 def read_csv(file_name):
@@ -118,7 +129,7 @@ def read_csv(file_name):
         return []
 
 
-def write_csv(file_name):
+def write_csv(file_name, data):
     with open(file_name, 'w', newline='') as file_csv:
         writer = csv.writer(file_csv)
         for item in data:
@@ -131,13 +142,14 @@ def add_data(data, input_string):
 
 
 def capture(route_path, decision):
-    base_route, automate_route = simple_route(route_path, decision)
-    print(base_route)
-    print(automate_route)
+    base_route, automate_route, code = simple_route(route_path, decision)
     image_count = int(input("Enter How Many Image      (ex : 100)             : "))
 
     image_route = base_route + "\\images" 
-    cap = cv2.VideoCapture(0)
+    cap = cv2.VideoCapture(5)
+
+    cap.set(cv2.CAP_PROP_FRAME_WIDTH, 320)
+    cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 320)
 
         # Looping image save program
     for imgnum in range(image_count):
@@ -178,7 +190,7 @@ def copy_random_images(source_folder, destination_folder, num_images):
 
 
 def pick_rand(route_path, decision):
-    base_route, automate_route = simple_route(route_path, decision)
+    base_route, automate_route, code = simple_route(route_path, decision)
 
     image_count = int(input("Enter How Many Image      (ex : 100)             : "))
 
@@ -206,7 +218,7 @@ def pick_rand(route_path, decision):
 
 
 def labeling(route_path, decision):
-    base_route, automate_route = simple_route(route_path, decision)
+    base_route, automate_route, code = simple_route(route_path, decision)
     image_route = automate_route + "\\images"
     label_route = automate_route + "\\labels\\classes.txt"
 
@@ -255,14 +267,15 @@ def train(folder_route, program_route, decision):
                 "--epochs", epochs_source,
                 "--weights", "",
                 "--cfg", cfg_source,
-                "--batch_size", batch_size_source,
-                "--patience", patience_size_source]
+                "--batch-size", batch_size_source,
+                "--patience", patience_size_source,
+                "--imgs", str(320)]
 
     run_python_file(train_file, argument)
 
 
 def Auto_Anotate(route_path, program_route, decision):
-    base_route, automate_route = simple_route(route_path, decision)
+    base_route, automate_route, code = simple_route(route_path, decision)
     
     model_type = str(input("Enter Model Train              (ex : train1)  : "))
 
@@ -279,15 +292,15 @@ def Auto_Anotate(route_path, program_route, decision):
         label_directory = os.path.join(folder_train_labels, label_name)
 
         image_directory = os.path.join(folder_train_images, name)
-        results = model(image_directory, name)
+        results = model(image_directory, size = 640)
         xyxy_results = results.pandas().xyxy[0]
 
-        if not hasil.empty:
+        if not xyxy_results.empty:
             xmin = xyxy_results['xmin'][0]
             ymin = xyxy_results['ymin'][0]
             xmax = xyxy_results['xmax'][0]
             ymax = xyxy_results['ymax'][0]
-            group = xyxy_resulst['class'][0]
+            group = xyxy_results['class'][0]
 
             index_class = 0
 
@@ -296,7 +309,7 @@ def Auto_Anotate(route_path, program_route, decision):
             width = (xmax-xmin)/640
             height = (ymax-ymin)/480
 
-            text = str(index_class) + " " + str(ycenter) + " " + str(width) + " " + str(height)
+            text = str(index_class) + " " + str(xcenter) + " " + str(ycenter) + " " + str(width) + " " + str(height)
 
             with open(label_directory, "w") as f:
                 f.write(text)
@@ -310,9 +323,15 @@ def Auto_Anotate(route_path, program_route, decision):
     folder_csv = base_route + "\\class_index.csv"
 
     if not os.path.exists(folder_csv):
-        with open(fodler_csv, "w", new_line=""):
+        with open(folder_csv, "w", newline=""):
             pass
 
     data = read_csv(folder_csv)
     data = add_data(data, code_type)
     write_csv(folder_csv, data)
+
+def run_python_file(file_name, arguments=None):
+    try:
+        subprocess.run(["python", file_name] + (arguments or []), check=True)
+    except subprocess.CalledProcessError as e:
+        print(f"Error: {e}")
