@@ -35,12 +35,14 @@ def flatten_list(nested_list):
     return flattened_list
 
 
-def write_text(link_path, list_name, name_file):
+def write_text(link_path, list_data, name_file):
     file_name = link_path + "\\" + name_file + ".txt"
-    with open(file_name, 'w+') as f:
-        for items in list_name:
-            f.write('%s\n' %items)
-    f.close()
+    with open(file_name, 'w') as file:
+        for key, value in list_data.items():
+            if key is None or value is None:
+                file.write("\n")
+            else:
+                file.write(f"{key}: {' '.join(value)}\n")
 
 
 def create_folder(source_path, list_value, subject_folder):
@@ -98,14 +100,37 @@ def master_program(base_folder):
 
     Last_Name_Group = str(input("Enter Grouping Name for depth " + str(Folder_Depth) + " : "))
     key_list.append(Last_Name_Group)
-    write_text(final_path, key_list, "group")
+
+    directory_dict[Last_Name_Group] = "BLANK"
+    write_text(final_path, directory_dict, "group")
 
     potong = str(input("Group Tier to Combine : "))
     ind = int(key_list.index(potong))
+    poto = ind+1
     new_value_list = value_list[ind+1:]
+    new_key_list = key_list[ind+1:]
+
+    before_directory_dict_conversion = list(directory_dict.keys())
+    before_directory_dict = {before_directory_dict_conversion[i]:directory_dict[before_directory_dict_conversion[i]] for i in range(ind+1)}
+
+    before_directory_dict[None] = None
+
+    after_directory_dict_conversion = list(directory_dict.items())
+    after_directory_dict_conversion.pop(ind)
+    after_directory_dict = dict(after_directory_dict_conversion)
+
+    write_directory_dict = before_directory_dict
+    write_directory_dict.update(after_directory_dict)
+
+    write_text(final_path, write_directory_dict, "group")
+
 
     new_key_list = key_list[ind+1:]
-    write_text(final_path, new_key_list, "group_crop")
+    conversion = list(directory_dict.items())
+    conversion.pop(ind)
+    new_directory_dict = dict(conversion)
+
+    write_text(final_path, new_directory_dict, "group_crop")
 
     Length_Folder_Depth = length_measure(value_list)
     Length_Folder_Depth_2 = length_measure(new_value_list)    
@@ -130,7 +155,7 @@ def master_program(base_folder):
         sub_folder_2a = []
 
         for j in range(count_subfolder_2):
-            Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j) + "- : "))
+            Name_Sub_2 = str(input("Enter Sub Name for " + key_sub_folder[i] + " -" + str(j+1) + "- : "))
             sub_folder_2.append(Name_Sub_2)
 
             if (i+1) > (Length_Folder_Depth-Length_Folder_Depth_2):
